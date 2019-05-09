@@ -225,6 +225,19 @@ open class BaseCollectionView: UICollectionView {
     }
 }
 
+public extension UICollectionViewCell {
+    static var reuseIdentifier: String { return String(describing: self) }
+    
+    var parentCollectionView: UICollectionView? {
+        var parentView: UIView? = self.superview
+        while (parentView != nil && (parentView as? UICollectionView) == nil) {
+            parentView = parentView?.superview
+        }
+        
+        return parentView  as? UICollectionView
+    }
+}
+
 open class BaseScrollView: UIScrollView {
     open var onTouchBeganEvent: (() -> ())?
     
@@ -233,4 +246,8 @@ open class BaseScrollView: UIScrollView {
         
         self.onTouchBeganEvent?()
     }
+}
+
+public extension UIView {
+    static var classIdentifier: String { return String(describing: self) }
 }
