@@ -132,6 +132,40 @@ public extension UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: button)
         return button
     }
+    
+    @discardableResult
+    func setBackBarButtonCustom(image: String, maskColor: UIColor? = nil, clickedHandler: ((ButtonHandler) -> ())? = nil) -> ButtonHandler {
+        let button = ButtonHandler(type: .custom)
+        button.setImage(UIImage(named: image)?.maskColor(maskColor), for: .normal)
+        button.onClickedHandler = { [weak self] btnBlock in
+            if clickedHandler == nil {
+                self?.navigationController?.popViewController(animated: true)
+            } else {
+                clickedHandler?(btnBlock)
+            }
+        }
+        
+        button.sizeToFit()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        return button
+    }
+    
+    @discardableResult
+    func setBackBarButtonCustom(title: String, color: UIColor? = nil, clickedHandler: ((ButtonHandler) -> ())? = nil) -> ButtonHandler {
+        let button = ButtonHandler(type: .custom)
+        button.setTitle(title, for: .normal)
+        if color != nil { button.setTitleColor(color!, for: .normal) }
+        button.onClickedHandler = { [weak self] btnBlock in
+            if clickedHandler == nil {
+                self?.navigationController?.popViewController(animated: true)
+            } else {
+                clickedHandler?(btnBlock)
+            }
+        }
+        button.sizeToFit()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        return button
+    }
 }
 
 open class BaseViewController: UIViewController {
