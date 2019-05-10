@@ -3,7 +3,7 @@
 //  Base Utils
 //
 //  Created by Dat Ng on 2/23/18.
-//  Copyright © 2018 datnm (laohac). All rights reserved.
+//  Copyright © 2018 datnm (laohac83x@gmail.com). All rights reserved.
 //
 
 import Foundation

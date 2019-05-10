@@ -3,7 +3,7 @@
 //  Base Extensions
 //
 //  Created by Dat Ng on 8/22/18.
-//  Copyright © 2018 datnm (laohac). All rights reserved.
+//  Copyright © 2018 datnm (laohac83x@gmail.com). All rights reserved.
 //
 
 import Foundation
