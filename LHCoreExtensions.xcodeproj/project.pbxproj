@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0819BFD6228BC70A007639BB /* UINavigationController+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0819BFD5228BC70A007639BB /* UINavigationController+Ex.swift */; };
 		083BD895227FE40F000C215D /* UIColor+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD886227FE40E000C215D /* UIColor+Ex.swift */; };
 		083BD896227FE40F000C215D /* Collection+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD887227FE40E000C215D /* Collection+Ex.swift */; };
 		083BD897227FE40F000C215D /* UIDevice+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD888227FE40E000C215D /* UIDevice+Ex.swift */; };
@@ -83,6 +84,7 @@
 
 /* Begin PBXFileReference section */
 		08132C5C22813567004DD791 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SupportingFiles/Info.plist; sourceTree = SOURCE_ROOT; };
+		0819BFD5228BC70A007639BB /* UINavigationController+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ex.swift"; sourceTree = "<group>"; };
 		083BD886227FE40E000C215D /* UIColor+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ex.swift"; sourceTree = "<group>"; };
 		083BD887227FE40E000C215D /* Collection+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Ex.swift"; sourceTree = "<group>"; };
 		083BD888227FE40E000C215D /* UIDevice+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Ex.swift"; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				083BD893227FE40F000C215D /* UIView+Ex.swift */,
 				083BD88D227FE40E000C215D /* UIViewController+Ex.swift */,
 				083BD890227FE40E000C215D /* UtilsEx.swift */,
+				0819BFD5228BC70A007639BB /* UINavigationController+Ex.swift */,
 				085502D622827B5D0009A753 /* DialogHandler.swift */,
 				085502D522827B5D0009A753 /* KeyboardHandler.swift */,
 				F8111E3619A95C8B0040E7D1 /* Supporting Files */,
@@ -594,6 +597,7 @@
 				085502D822827B5D0009A753 /* DialogHandler.swift in Sources */,
 				083BD897227FE40F000C215D /* UIDevice+Ex.swift in Sources */,
 				083BD8A3227FE40F000C215D /* UITableView+Ex.swift in Sources */,
+				0819BFD6228BC70A007639BB /* UINavigationController+Ex.swift in Sources */,
 				083BD895227FE40F000C215D /* UIColor+Ex.swift in Sources */,
 				083BD8A2227FE40F000C215D /* UIView+Ex.swift in Sources */,
 				085502D722827B5D0009A753 /* KeyboardHandler.swift in Sources */,
