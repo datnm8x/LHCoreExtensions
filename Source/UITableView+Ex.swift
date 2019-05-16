@@ -139,7 +139,17 @@ public extension UITableViewCell {
         self.layoutMargins = UIEdgeInsets.zero
     }
     
-    func setSeparatorInsets(edgeInsets: UIEdgeInsets) {
+    func setSeparatorInsets(_ edgeInsets: UIEdgeInsets) {
+        self.preservesSuperviewLayoutMargins = false
+        self.separatorInset = edgeInsets
+        self.layoutMargins = UIEdgeInsets.zero
+    }
+    
+    func setSeparatorInsetsEdges(left: CGFloat, right: CGFloat) {
+        var edgeInsets = UIEdgeInsets.zero
+        edgeInsets.left = left
+        edgeInsets.right = right
+        
         self.preservesSuperviewLayoutMargins = false
         self.separatorInset = edgeInsets
         self.layoutMargins = UIEdgeInsets.zero

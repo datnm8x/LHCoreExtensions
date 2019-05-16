@@ -166,6 +166,19 @@ public extension UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         return button
     }
+    
+    static var classIdentifier: String {
+        return String(describing: self)
+    }
+    
+    // return an instance UIViewController from storyboard with class name identifier
+    class func instanceStoryboard(_ storyboard: UIStoryboard) -> Self? {
+        return instanceFromStoryboard(storyboard)
+    }
+    
+    private class func instanceFromStoryboard<T: UIViewController>(_ storyboard: UIStoryboard) -> T? {
+        return storyboard.instantiateViewController(withIdentifier: T.self.classIdentifier) as? T
+    }
 }
 
 open class BaseViewController: UIViewController {
