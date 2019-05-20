@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-class DialogHandler {
+open class DialogHandler {
     @discardableResult
-    fileprivate class func showAlert(title: String? = nil, message: String?,
+    open class func showAlert(title: String? = nil, message: String?,
                                      button: String = "OK",
                                      tintColor: UIColor? = nil,
                                      onVC: UIViewController? = nil, buttonHandler:(() -> Void)? = nil) -> UIAlertController? {
@@ -35,7 +35,7 @@ class DialogHandler {
     }
 
     @discardableResult
-    class func showDialogConfirm(title: String? = nil, message: String?,
+    open class func showDialogConfirm(title: String? = nil, message: String?,
                           btnOK: String = "OK", btnCancel: String = "Cancel",
                           tintColor: UIColor? = nil,
                           onVC: UIViewController? = nil, buttonHandler:((String) -> Void)? = nil) -> UIAlertController? {

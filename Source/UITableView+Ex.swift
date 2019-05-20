@@ -81,13 +81,19 @@ public extension UITableView {
     }
     
     func scrollToLastRow(animated: Bool = true, atScrollPosition: UITableView.ScrollPosition = .bottom) {
-        let sections = self.numberOfSections
-        if sections > 0 {
-            let rows = self.numberOfRows(inSection: sections - 1)
-            if self.isValidIndexPath(IndexPath(row: rows - 1, section: sections - 1)) {
-                self.scrollToRow(at: IndexPath(row: rows - 1, section: sections - 1), at: atScrollPosition, animated: animated)
-            }
-        }
+        let section = self.numberOfSections - 1
+        guard section >= 0 else { return }
+        let row = self.numberOfRows(inSection: section) - 1
+        guard row >= 0, self.isValidIndexPath(IndexPath(row: row, section: section)) else { return }
+        
+        self.scrollToRow(at: IndexPath(row: row, section: section), at: atScrollPosition, animated: animated)
+    }
+    
+    func scrollToCell(_ toCell: UITableViewCell?, animated: Bool = true, atScrollPosition: UITableView.ScrollPosition = .bottom) {
+        guard let cell = toCell else { return }
+        guard let indexPath = self.indexPath(for: cell), self.isValidIndexPath(indexPath) else { return }
+        
+        self.scrollToRow(at: indexPath, at: atScrollPosition, animated: animated)
     }
     
     func scrollToBottom(animated: Bool = true) {
@@ -156,11 +162,31 @@ public extension UITableViewCell {
     }
 }
 
+public extension UIView {
+    var parentTableViewCell: UITableViewCell? {
+        var parentView: UIView? = self.superview
+        while (parentView != nil && (parentView as? UITableViewCell) == nil) {
+            parentView = parentView?.superview
+        }
+        
+        return parentView  as? UITableViewCell
+    }
+    
+    var parentCollectionViewCell: UICollectionViewCell? {
+        var parentView: UIView? = self.superview
+        while (parentView != nil && (parentView as? UICollectionViewCell) == nil) {
+            parentView = parentView?.superview
+        }
+        
+        return parentView  as? UICollectionViewCell
+    }
+}
+
 open class BaseTableView: UITableView {
     override open func scrollToRow(at indexPath: IndexPath, at scrollPosition: UITableView.ScrollPosition, animated: Bool) {
-        if self.isValidIndexPath(indexPath) {
-            super.scrollToRow(at: indexPath, at: scrollPosition, animated: animated)
-        }
+        guard self.isValidIndexPath(indexPath) else { return }
+        
+        super.scrollToRow(at: indexPath, at: scrollPosition, animated: animated)
     }
     
     open var onTouchBeganEvent: (() -> ())?

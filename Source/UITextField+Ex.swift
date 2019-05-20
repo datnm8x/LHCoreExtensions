@@ -142,7 +142,7 @@ public struct ActionEvents: OptionSet {
 open class BaseTextField: UITextField {
     open var disableActionEvents: ActionEvents = .none
     
-    @IBInspectable var textContainInset: UIEdgeInsets = UIEdgeInsets.zero {
+    @IBInspectable open var textContainInset: UIEdgeInsets = UIEdgeInsets.zero {
         didSet {
             setNeedsDisplay()
         }
