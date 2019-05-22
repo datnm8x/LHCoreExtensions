@@ -96,11 +96,6 @@ public extension UITableView {
         self.scrollToRow(at: indexPath, at: atScrollPosition, animated: animated)
     }
     
-    func scrollToBottom(animated: Bool = true) {
-        let offset = self.contentSize.height - self.bounds.size.height
-        self.setContentOffset(CGPoint(x: 0, y: offset), animated: animated)
-    }
-    
     func isLastIndexPath(_ indexPath: IndexPath) -> Bool {
         return (indexPath.section == self.numberOfSections - 1) && (indexPath.row == self.numberOfRows(inSection: indexPath.section) - 1)
     }
@@ -236,6 +231,31 @@ public extension UICollectionView {
         self.reloadData()
         CATransaction.commit()
     }
+    
+    func isValidIndexPath(_ indexPath: IndexPath) -> Bool {
+        return indexPath.item >= 0 && indexPath.section >= 0 && indexPath.section < self.numberOfSections && indexPath.item < self.numberOfItems(inSection: indexPath.section)
+    }
+    
+    func scrollToLastItem(animated: Bool = true, atScrollPosition: UICollectionView.ScrollPosition = .bottom) {
+        let sectionIndex = self.numberOfSections - 1
+        guard sectionIndex >= 0 else { return }
+        let itemIndex = self.numberOfItems(inSection: sectionIndex) - 1
+        let toIndexPath = IndexPath(item: itemIndex, section: sectionIndex)
+        guard itemIndex >= 0, self.isValidIndexPath(toIndexPath) else { return }
+        
+        self.scrollToItem(at: toIndexPath, at: atScrollPosition, animated: animated)
+    }
+    
+    func scrollToCell(_ toCell: UICollectionViewCell?, animated: Bool = true, atScrollPosition: UICollectionView.ScrollPosition = .bottom) {
+        guard let cell = toCell else { return }
+        guard let indexPath = self.indexPath(for: cell), self.isValidIndexPath(indexPath) else { return }
+        
+        self.scrollToItem(at: indexPath, at: atScrollPosition, animated: animated)
+    }
+    
+    func isLastIndexPath(_ indexPath: IndexPath) -> Bool {
+        return (indexPath.section == self.numberOfSections - 1) && (indexPath.item == self.numberOfItems(inSection: indexPath.section) - 1)
+    }
 }
 
 open class BaseCollectionView: UICollectionView {
@@ -271,6 +291,13 @@ public extension UICollectionViewCell {
         }
         
         return parentView  as? UICollectionView
+    }
+}
+
+public extension UIScrollView {
+    func scrollToBottom(animated: Bool = true) {
+        let offset = self.contentSize.height - self.bounds.size.height
+        self.setContentOffset(CGPoint(x: 0, y: offset), animated: animated)
     }
 }
 

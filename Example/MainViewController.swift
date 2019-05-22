@@ -21,12 +21,13 @@ class MainViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        btnHandler.onClickedHandler = { _ in
-            DebugLog("onClickedHandler")
+        btnHandler.onClickedHandler = { [weak self] _ in
+            guard let pushVC = PushViewController1.instanceStoryboard(UIStoryboard(name: "Main", bundle: nil)) else { return }
+            self?.navigationController?.pushViewController(pushVC, animated: true)
         }
         
-        btnHandler.setBackgroundColor(UIColor.yellow, for: UIControl.State.normal)
-        btnHandler.isEnabled = false
+//        btnHandler.setBackgroundColor(UIColor.yellow, for: UIControl.State.normal)
+//        btnHandler.isEnabled = false
         btnHandler.isSelected = true
         btnHandler.isHighlighted = true
         
@@ -160,7 +161,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.reuseIdentifier)!
         cell.textLabel?.text = dataTest[indexPath.row]
         cell.setSeparatorFullWidth()
-        cell.setSeparatorInsets(edgeInsets: UIEdgeInsets.zero)
+        cell.setSeparatorInsets(UIEdgeInsets.zero)
         
         return cell
     }

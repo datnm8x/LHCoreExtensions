@@ -12,6 +12,14 @@ target 'LHCoreExtensions iOS' do
     # Pods for testing
     pod 'Nimble'
   end
+  
+  target 'Example' do
+    # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+    use_frameworks!
+    
+    # Pods for tabereru
+    pod 'SnapKit'
+  end
 
 end
 

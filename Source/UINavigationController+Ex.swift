@@ -45,5 +45,32 @@ public extension UINavigationController {
         CATransaction.commit()
         return results
     }
+    
+    func pushViewControllerAndRemoveBefores(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
+        self.pushViewController(viewController, animated: animated) { [weak self] in
+            guard let firstVC = self?.viewControllers.first, let lastVC = self?.viewControllers.last, firstVC != lastVC else {
+                completion?()
+                return
+            }
+            self?.viewControllers = [firstVC, lastVC]
+            completion?()
+        }
+    }
+    
+    func pushToViewControllerBefore(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
+        var stackVCs = self.viewControllers
+        let indexVc = stackVCs.remove(object: viewController)
+        self.viewControllers = stackVCs
+        var stackFinal = [UIViewController]()
+        let indexVcFinal = indexVc ?? stackVCs.count
+        for idx: Int in 0..<indexVcFinal {
+            stackFinal.append(stackVCs[idx])
+        }
+        stackFinal.append(viewController)
+        self.pushViewController(viewController, animated: animated) { [weak self] in
+            self?.viewControllers = stackFinal
+            completion?()
+        }
+    }
 }
 
