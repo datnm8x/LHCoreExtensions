@@ -15,7 +15,7 @@ open class DialogHandler {
                                      button: String = "OK",
                                      tintColor: UIColor? = nil,
                                      onVC: UIViewController? = nil, buttonHandler:(() -> Void)? = nil) -> UIAlertController? {
-        if (String.isEmpty(title, characterSet: .whitespacesAndNewlines) && String.isEmpty(message, characterSet: .whitespacesAndNewlines)) || String.isEmpty(button, characterSet: .whitespacesAndNewlines) {
+        if (String.isEmpty(title, trimCharacters: .whitespacesAndNewlines) && String.isEmpty(message, trimCharacters: .whitespacesAndNewlines)) || String.isEmpty(button, trimCharacters: .whitespacesAndNewlines) {
             return nil
         }
         
@@ -40,11 +40,11 @@ open class DialogHandler {
                           tintColor: UIColor? = nil,
                           onVC: UIViewController? = nil, buttonHandler:((String) -> Void)? = nil) -> UIAlertController? {
         
-        if (String.isEmpty(title, characterSet: .whitespacesAndNewlines) && String.isEmpty(message, characterSet: .whitespacesAndNewlines)) {
+        if (String.isEmpty(title, trimCharacters: .whitespacesAndNewlines) && String.isEmpty(message, trimCharacters: .whitespacesAndNewlines)) {
             return nil
         }
         
-        if (String.isEmpty(btnOK, characterSet: .whitespacesAndNewlines) && String.isEmpty(btnCancel, characterSet: .whitespacesAndNewlines)) {
+        if (String.isEmpty(btnOK, trimCharacters: .whitespacesAndNewlines) && String.isEmpty(btnCancel, trimCharacters: .whitespacesAndNewlines)) {
             return nil
         }
         

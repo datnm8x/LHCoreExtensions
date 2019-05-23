@@ -46,9 +46,9 @@ public extension String {
         return -1
     }
     
-    static func isEmpty(_ string: String?, characterSet: CharacterSet = CharacterSet(charactersIn: "")) -> Bool {
+    static func isEmpty(_ string: String?, trimCharacters: CharacterSet = CharacterSet(charactersIn: "")) -> Bool {
         if (string == nil) { return true }
-        return string!.trimmingCharacters(in: characterSet) == ""
+        return string!.trimmingCharacters(in: trimCharacters) == ""
     }
     
     func toDate(withFormat formatDate: String) -> Date? {
