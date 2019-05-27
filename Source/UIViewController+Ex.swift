@@ -10,11 +10,23 @@ import Foundation
 import UIKit
 
 public extension UIViewController {
-    var topDistance: CGFloat {
+    var topBarsDistance: CGFloat {
         var mTopDistance = self.navigationController?.navigationBar.intrinsicContentSize.height ?? 0
         mTopDistance += UIApplication.shared.isStatusBarHidden ? 0 : UIApplication.shared.statusBarFrame.height
         
         return mTopDistance
+    }
+    
+    var bottomBarsDistance: CGFloat {
+        return self.tabBarController?.tabBar.intrinsicContentSize.height ?? 0
+    }
+    
+    var safeAreaInsets: UIEdgeInsets {
+        if #available(iOS 11.0, *) {
+            return self.view.safeAreaInsets
+        } else {
+            return UIEdgeInsets.zero
+        }
     }
     
     var topMostViewController: UIViewController {
