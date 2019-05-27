@@ -282,8 +282,6 @@ open class BaseCollectionView: UICollectionView {
 }
 
 public extension UICollectionViewCell {
-    static var reuseIdentifier: String { return String(describing: self) }
-    
     var parentCollectionView: UICollectionView? {
         var parentView: UIView? = self.superview
         while (parentView != nil && (parentView as? UICollectionView) == nil) {
@@ -311,6 +309,10 @@ open class BaseScrollView: UIScrollView {
     }
 }
 
-public extension UIView {
-    static var classIdentifier: String { return String(describing: self) }
+extension UICollectionReusableView {
+    static var reuseIdentifier: String { return String(describing: self) }
+}
+
+extension UITableViewHeaderFooterView {
+    static var reuseIdentifier: String { return String(describing: self) }
 }
