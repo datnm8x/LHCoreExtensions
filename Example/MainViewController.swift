@@ -62,7 +62,12 @@ class MainViewController: BaseViewController {
         }
         
         _ = CustomViewTest.fromNib(nibNameOrNil: "TestNil")
-        DebugLog(self.topDistance)
+        DebugLog(self.topBarsDistance)
+        
+        guard atFirst else { return }
+        
+        let date = Date(minuteInterval: 5)
+        DebugLog(date.minute)
     }
 
     override func didReceiveMemoryWarning() {

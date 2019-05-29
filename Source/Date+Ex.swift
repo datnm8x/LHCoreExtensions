@@ -42,27 +42,87 @@ public extension Date {
     }
     
     var day: Int {
-        return Calendar.current.dateComponents(Set<Calendar.Component>([.day]), from: self).day ?? 0
+        get {
+            return Calendar.current.dateComponents(Set<Calendar.Component>([.day]), from: self).day ?? 0
+        }
+        set {
+            var dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: self)
+            dateComponents.day = newValue
+            guard let newDate = Calendar.current.date(from: dateComponents) else {
+                return
+            }
+            self = newDate
+        }
     }
     
     var month: Int {
-        return Calendar.current.dateComponents(Set<Calendar.Component>([.month]), from: self).month ?? 0
+        get {
+            return Calendar.current.dateComponents(Set<Calendar.Component>([.month]), from: self).month ?? 0
+        }
+        set {
+            var dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: self)
+            dateComponents.month = newValue
+            guard let newDate = Calendar.current.date(from: dateComponents) else {
+                return
+            }
+            self = newDate
+        }
     }
     
     var year: Int {
-        return Calendar.current.dateComponents(Set<Calendar.Component>([.year]), from: self).year ?? 0
+        get {
+            return Calendar.current.dateComponents(Set<Calendar.Component>([.year]), from: self).year ?? 0
+        }
+        set {
+            var dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: self)
+            dateComponents.year = newValue
+            guard let newDate = Calendar.current.date(from: dateComponents) else {
+                return
+            }
+            self = newDate
+        }
     }
     
     var second: Int {
-        return Calendar.current.dateComponents(Set<Calendar.Component>([.second]), from: self).second ?? 0
+        get {
+            return Calendar.current.dateComponents(Set<Calendar.Component>([.second]), from: self).second ?? 0
+        }
+        set {
+            var dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: self)
+            dateComponents.second = newValue
+            guard let newDate = Calendar.current.date(from: dateComponents) else {
+                return
+            }
+            self = newDate
+        }
     }
     
     var minute: Int {
-        return Calendar.current.dateComponents(Set<Calendar.Component>([.minute]), from: self).minute ?? 0
+        get {
+            return Calendar.current.dateComponents(Set<Calendar.Component>([.minute]), from: self).minute ?? 0
+        }
+        set {
+            var dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: self)
+            dateComponents.minute = newValue
+            guard let newDate = Calendar.current.date(from: dateComponents) else {
+                return
+            }
+            self = newDate
+        }
     }
     
     var hour: Int {
-        return Calendar.current.dateComponents(Set<Calendar.Component>([.hour]), from: self).hour ?? 0
+        get {
+            return Calendar.current.dateComponents(Set<Calendar.Component>([.hour]), from: self).hour ?? 0
+        }
+        set {
+            var dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: self)
+            dateComponents.hour = newValue
+            guard let newDate = Calendar.current.date(from: dateComponents) else {
+                return
+            }
+            self = newDate
+        }
     }
     
     func isEqualDateIgnoreTime(toDate: Date?) -> Bool {
@@ -78,6 +138,14 @@ public extension Date {
     
     func addingDays(_ days: Int) -> Date {
         return self.addingTimeInterval(TimeInterval(days * 24 * 60 * 60))
+    }
+    
+    // interval must be evenly divided into 60. default is 0. min is 0, max is 30
+    init(minuteInterval: Int, since date: Date = Date()) {
+        self = date
+        guard minuteInterval > 1 else { return }
+        let minuteInterval = Int(date.minute / minuteInterval) * minuteInterval
+        self.minute = minuteInterval
     }
 }
 
