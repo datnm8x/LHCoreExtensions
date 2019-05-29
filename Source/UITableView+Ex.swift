@@ -309,10 +309,10 @@ open class BaseScrollView: UIScrollView {
     }
 }
 
-extension UICollectionReusableView {
+public extension UICollectionReusableView {
     static var reuseIdentifier: String { return String(describing: self) }
 }
 
-extension UITableViewHeaderFooterView {
+public extension UITableViewHeaderFooterView {
     static var reuseIdentifier: String { return String(describing: self) }
 }

@@ -51,12 +51,12 @@ public extension UITextField {
         return (result, resultString)
     }
     
-    func shouldChangeCharactersInRange(numericType: NumericType, maxValue: Float? = nil, maxFractionDigits: Int? = nil, inRange: NSRange, replacementString string: String) -> Bool {
+    func shouldChangeCharactersInRange(numericType: NumericType, groupSeparator: String? = nil, maxValue: Float? = nil, maxFractionDigits: Int? = nil, inRange: NSRange, replacementString string: String) -> Bool {
         let resultString: String = (self.text ?? "").nsString.replacingCharacters(in: inRange, with: string)
         if resultString.isEmpty { return true }
-        let result: Bool = resultString.isNumeric(type: numericType, maxFractionDigits: maxFractionDigits)
+        let result: Bool = resultString.isNumeric(type: numericType, groupSeparator: groupSeparator, maxFractionDigits: maxFractionDigits)
         if let hasMax = maxValue, result == true, hasMax > 0 {
-            return (resultString.toFloat() ?? 0) <= hasMax
+            return (resultString.toFloat(withComma: groupSeparator) ?? 0) <= hasMax
         }
         return result
     }
