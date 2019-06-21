@@ -104,7 +104,7 @@ public extension DispatchQueue {
     }
     
     class func mainAsyncAfter(seconds: Double, execute work: @escaping @convention(block) () -> Swift.Void) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime(uptimeSeconds: seconds)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             DispatchQueue.main.async {
                 work()
             }
@@ -112,7 +112,7 @@ public extension DispatchQueue {
     }
     
     class func mainSyncAfter(seconds: Double, execute work: @escaping @convention(block) () -> Swift.Void) {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.uptimeSeconds(seconds)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
             guard Thread.isMainThread == false else {
                 work()
                 return
@@ -130,7 +130,7 @@ public extension DispatchQueue {
     }
     
     class func backgroundAsyncAfter(seconds: Double, execute work: @escaping @convention(block) () -> Swift.Void) {
-        DispatchQueue.background.asyncAfter(deadline: DispatchTime.uptimeSeconds(seconds)) {
+        DispatchQueue.background.asyncAfter(deadline: .now() + seconds) {
             work()
         }
     }

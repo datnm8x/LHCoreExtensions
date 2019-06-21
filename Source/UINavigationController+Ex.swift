@@ -46,6 +46,7 @@ public extension UINavigationController {
         return results
     }
     
+    // This function will be push viewController, and then remove all viewControllers in stack and only keep rootViewController of stack
     func pushViewControllerAndRemoveBefores(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
         self.pushViewController(viewController, animated: animated) { [weak self] in
             guard let firstVC = self?.viewControllers.first, let lastVC = self?.viewControllers.last, firstVC != lastVC else {
@@ -57,6 +58,7 @@ public extension UINavigationController {
         }
     }
     
+    // if stacks include viewController, remove all viewControllers from viewController position, and push viewController again, other, push in viewController
     func pushToViewControllerBefore(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
         var stackVCs = self.viewControllers
         let indexVc = stackVCs.remove(object: viewController)

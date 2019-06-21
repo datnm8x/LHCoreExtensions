@@ -25,6 +25,10 @@ public extension String {
         return String(self[indexBy])
     }
     
+    static func path(withComponents components: [String]) -> String {
+        return NSString.path(withComponents: components)
+    }
+    
     func appendingPathComponent(_ pathComponent: String?) -> String {
         guard let pathComponent = pathComponent else {
             return self
@@ -38,6 +42,13 @@ public extension String {
         }
         return (self as NSString).appendingPathExtension(pathExtension) ?? self
     }
+    
+    var pathComponents: [String] { return nsString.pathComponents }
+    var isAbsolutePath: Bool { return nsString.isAbsolutePath }
+    var lastPathComponent: String { return nsString.lastPathComponent }
+    var deletingLastPathComponent: String { return nsString.deletingLastPathComponent }
+    var pathExtension: String { return nsString.pathExtension }
+    var deletingPathExtension: String { return nsString.deletingPathExtension }
     
     func indexOf(target: String) -> Int {
         if let range = self.range(of: target) {
