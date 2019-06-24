@@ -177,7 +177,7 @@ public extension UIView {
     }
 }
 
-open class BaseTableView: UITableView {
+open class LHBaseTableView: UITableView {
     override open func scrollToRow(at indexPath: IndexPath, at scrollPosition: UITableView.ScrollPosition, animated: Bool) {
         guard self.isValidIndexPath(indexPath) else { return }
         
@@ -258,7 +258,7 @@ public extension UICollectionView {
     }
 }
 
-open class BaseCollectionView: UICollectionView {
+open class LHBaseCollectionView: UICollectionView {
     
     override open var collectionViewLayout: UICollectionViewLayout {
         didSet {
@@ -299,7 +299,7 @@ public extension UIScrollView {
     }
 }
 
-open class BaseScrollView: UIScrollView {
+open class LHBaseScrollView: UIScrollView {
     open var onTouchBeganEvent: (() -> ())?
     
     override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

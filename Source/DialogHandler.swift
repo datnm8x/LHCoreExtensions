@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-open class DialogHandler {
+open class LHDialogHandler {
     @discardableResult
     open class func showAlert(title: String? = nil, message: String?,
                                      button: String = "OK",

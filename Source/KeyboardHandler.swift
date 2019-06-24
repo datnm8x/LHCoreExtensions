@@ -9,13 +9,13 @@
 import UIKit
 import Foundation
 
-public typealias KeyboardHandlerCallback = (KeyboardHandler, KeyboardInfo) -> Void
+public typealias LHKeyboardHandlerCallback = (LHKeyboardHandler, LHKeyboardInfo) -> Void
 
 /// Responsible for observing `UIKeyboard` notifications and calling `delegate` to notify about changes.
-open class KeyboardHandler {
-    public static let shared: KeyboardHandler = KeyboardHandler()
+open class LHKeyboardHandler {
+    public static let shared: LHKeyboardHandler = LHKeyboardHandler()
     /// The delegate for keyboard notifications.
-    open var callback: KeyboardHandlerCallback?
+    open var callback: LHKeyboardHandlerCallback?
     
     /// Creates a new instance of `KeyboardHandler` and adds itself as observer for `UIKeyboard` notifications.
     public init() {
@@ -33,38 +33,38 @@ open class KeyboardHandler {
     }
     
     @objc private func keyboardWillShowNotification(_ notification: Notification) {
-        let info = KeyboardInfo(info: notification.userInfo, state: .willShow)
+        let info = LHKeyboardInfo(info: notification.userInfo, state: .willShow)
         callback?(self, info)
     }
     
     @objc private func keyboardDidShowNotification(_ notification: Notification) {
-        let info = KeyboardInfo(info: notification.userInfo, state: .visible)
+        let info = LHKeyboardInfo(info: notification.userInfo, state: .visible)
         callback?(self, info)
     }
     
     @objc private func keyboardWillChangeNotification(_ notification: Notification) {
-        let info = KeyboardInfo(info: notification.userInfo, state: .willChangeFrame)
+        let info = LHKeyboardInfo(info: notification.userInfo, state: .willChangeFrame)
         callback?(self, info)
     }
     
     @objc private func keyboardDidChangedNotification(_ notification: Notification) {
-        let info = KeyboardInfo(info: notification.userInfo, state: .didChangedFrame)
+        let info = LHKeyboardInfo(info: notification.userInfo, state: .didChangedFrame)
         callback?(self, info)
     }
     
     @objc private func keyboardWillHideNotification(_ notification: Notification) {
-        let info = KeyboardInfo(info: notification.userInfo, state: .willHide)
+        let info = LHKeyboardInfo(info: notification.userInfo, state: .willHide)
         callback?(self, info)
     }
     
     @objc private func keyboardDidHideNotification(_ notification: Notification) {
-        let info = KeyboardInfo(info: notification.userInfo, state: .hidden)
+        let info = LHKeyboardInfo(info: notification.userInfo, state: .hidden)
         callback?(self, info)
     }
 }
 
 /// Represents the keyboard state.
-public enum KeyboardState {
+public enum LHKeyboardState {
     
     /// Denotes hidden state of the keyboard.
     /// Corresponds to `UIKeyboardDidHideNotification`.
@@ -87,10 +87,10 @@ public enum KeyboardState {
 }
 
 /// Represents info about keyboard extracted from `NSNotification`.
-public struct KeyboardInfo {
+public struct LHKeyboardInfo {
     
     /// The state of the keyboard.
-    public let state: KeyboardState
+    public let state: LHKeyboardState
     
     /// The start frame of the keyboard in screen coordinates.
     /// Corresponds to `UIKeyboardFrameBeginUserInfoKey`.
@@ -124,10 +124,10 @@ public struct KeyboardInfo {
     }
 }
 
-public extension KeyboardInfo {
+public extension LHKeyboardInfo {
     /// Creates instance of `KeyboardInfo` using `userInfo` from `NSNotification` object and a keyboard state.
     /// If there is no info or `info` doesn't contain appropriate key-value pair uses default values.
-    init(info: [AnyHashable: Any]?, state: KeyboardState) {
+    init(info: [AnyHashable: Any]?, state: LHKeyboardState) {
         self.state = state
         self.beginFrame = (info?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue ?? CGRect.zero
         let kEndFrame = (info?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue ?? CGRect.zero

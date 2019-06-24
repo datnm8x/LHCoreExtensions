@@ -52,8 +52,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setLeftBarButtonItemCustom(image: String, maskColor: UIColor? = nil, target: Any?, action: Selector) -> UIButton {
-        let button = ButtonHandler(type: .custom)
+    func setLeftBarButtonItemCustom(image: String, maskColor: UIColor? = nil, target: Any?, action: Selector) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setImage(UIImage(named: image)?.maskColor(maskColor), for: .normal)
         button.addTarget(target, action: action, for: .touchUpInside)
         button.sizeToFit()
@@ -62,8 +62,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setLeftBarButtonItemCustom(title: String, color: UIColor? = nil, target: Any?, action: Selector) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setLeftBarButtonItemCustom(title: String, color: UIColor? = nil, target: Any?, action: Selector) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setTitle(title, for: .normal)
         if color != nil { button.setTitleColor(color!, for: .normal) }
         button.addTarget(target, action: action, for: .touchUpInside)
@@ -73,8 +73,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setLeftBarButtonItemCustom(image: String, maskColor: UIColor? = nil, clickedHandler: ((ButtonHandler) -> ())? = nil) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setLeftBarButtonItemCustom(image: String, maskColor: UIColor? = nil, clickedHandler: ((LHButtonHandler) -> ())? = nil) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setImage(UIImage(named: image)?.maskColor(maskColor), for: .normal)
         button.onClickedHandler = { [weak self] button in
             clickedHandler?(button)
@@ -88,8 +88,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setLeftBarButtonItemCustom(title: String, color: UIColor? = nil, clickedHandler: ((ButtonHandler) -> ())? = nil) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setLeftBarButtonItemCustom(title: String, color: UIColor? = nil, clickedHandler: ((LHButtonHandler) -> ())? = nil) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setTitle(title, for: .normal)
         if color != nil { button.setTitleColor(color!, for: .normal) }
         button.onClickedHandler = { [weak self] button in
@@ -104,8 +104,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setRightBarButtonItemCustom(image: String, maskColor: UIColor? = nil, target: Any?, action: Selector) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setRightBarButtonItemCustom(image: String, maskColor: UIColor? = nil, target: Any?, action: Selector) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setImage(UIImage(named: image)?.maskColor(maskColor), for: .normal)
         button.addTarget(self, action: action, for: .touchUpInside)
         button.sizeToFit()
@@ -114,8 +114,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setRightBarButtonItemCustom(title: String, color: UIColor? = nil, target: Any?, action: Selector) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setRightBarButtonItemCustom(title: String, color: UIColor? = nil, target: Any?, action: Selector) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setTitle(title, for: .normal)
         if color != nil { button.setTitleColor(color!, for: .normal) }
         button.addTarget(self, action: action, for: .touchUpInside)
@@ -125,8 +125,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setRightBarButtonItemCustom(image: String, maskColor: UIColor? = nil, clickedHandler: ((ButtonHandler) -> ())? = nil) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setRightBarButtonItemCustom(image: String, maskColor: UIColor? = nil, clickedHandler: ((LHButtonHandler) -> ())? = nil) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setImage(UIImage(named: image)?.maskColor(maskColor), for: .normal)
         button.onClickedHandler = clickedHandler
         button.sizeToFit()
@@ -135,8 +135,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setRightBarButtonItemCustom(title: String, color: UIColor? = nil, clickedHandler: ((ButtonHandler) -> ())? = nil) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setRightBarButtonItemCustom(title: String, color: UIColor? = nil, clickedHandler: ((LHButtonHandler) -> ())? = nil) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setTitle(title, for: .normal)
         if color != nil { button.setTitleColor(color!, for: .normal) }
         button.onClickedHandler = clickedHandler
@@ -146,8 +146,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setBackBarButtonCustom(image: String, maskColor: UIColor? = nil, clickedHandler: ((ButtonHandler) -> ())? = nil) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setBackBarButtonCustom(image: String, maskColor: UIColor? = nil, clickedHandler: ((LHButtonHandler) -> ())? = nil) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setImage(UIImage(named: image)?.maskColor(maskColor), for: .normal)
         button.onClickedHandler = { [weak self] btnBlock in
             if clickedHandler == nil {
@@ -163,8 +163,8 @@ public extension UIViewController {
     }
     
     @discardableResult
-    func setBackBarButtonCustom(title: String, color: UIColor? = nil, clickedHandler: ((ButtonHandler) -> ())? = nil) -> ButtonHandler {
-        let button = ButtonHandler(type: .custom)
+    func setBackBarButtonCustom(title: String, color: UIColor? = nil, clickedHandler: ((LHButtonHandler) -> ())? = nil) -> LHButtonHandler {
+        let button = LHButtonHandler(type: .custom)
         button.setTitle(title, for: .normal)
         if color != nil { button.setTitleColor(color!, for: .normal) }
         button.onClickedHandler = { [weak self] btnBlock in
@@ -193,7 +193,7 @@ public extension UIViewController {
     }
 }
 
-open class BaseViewController: UIViewController {
+open class LHBaseViewController: UIViewController {
     fileprivate var isViewWillAppearAtFirst: Bool = true
     fileprivate var isViewDidAppearAtFirst: Bool = true
     
@@ -215,7 +215,7 @@ open class BaseViewController: UIViewController {
     open func viewDidAppearAtFirst(_ atFirst: Bool, animated: Bool) { }
 }
 
-open class BaseTableViewController: UITableViewController {
+open class LHBaseTableViewController: UITableViewController {
     fileprivate var isViewWillAppearAtFirst: Bool = true
     fileprivate var isViewDidAppearAtFirst: Bool = true
     
@@ -237,7 +237,7 @@ open class BaseTableViewController: UITableViewController {
     open func viewDidAppearAtFirst(_ atFirst: Bool, animated: Bool) { }
 }
 
-open class BaseCollectionViewController: UICollectionViewController {
+open class LHBaseCollectionViewController: UICollectionViewController {
     fileprivate var isViewWillAppearAtFirst: Bool = true
     fileprivate var isViewDidAppearAtFirst: Bool = true
     

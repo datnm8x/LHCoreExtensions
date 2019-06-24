@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-open class ButtonHandler: UIButton {
+open class LHButtonHandler: UIButton {
     @objc private func didClickedAction() {
         self.onClickedHandler?(self)
     }
     
-    open var onClickedHandler: ((ButtonHandler) -> Void)? {
+    open var onClickedHandler: ((LHButtonHandler) -> Void)? {
         didSet {
             self.removeTarget(self, action: #selector(didClickedAction), for: .touchUpInside)
             self.addTarget(self, action: #selector(didClickedAction), for: .touchUpInside)

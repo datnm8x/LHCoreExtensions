@@ -134,12 +134,12 @@ public struct ActionEvents: OptionSet {
     public static var all: ActionEvents { return ActionEvents(rawValue: 1 << 5) }
 }
 
-@objc public protocol BaseTextFieldDelegate: UITextFieldDelegate {
+@objc public protocol LHBaseTextFieldDelegate: UITextFieldDelegate {
     @objc optional func textFieldTextDidChanged(_ textField: UITextField)
 }
 
 @IBDesignable
-open class BaseTextField: UITextField {
+open class LHBaseTextField: UITextField {
     open var disableActionEvents: ActionEvents = .none
     
     @IBInspectable open var textContainInset: UIEdgeInsets = UIEdgeInsets.zero {
@@ -218,7 +218,7 @@ open class BaseTextField: UITextField {
     }
     
     private func notifyDelegateTextDidChanged() {
-        if let customDelete = self.delegate as? BaseTextFieldDelegate, customDelete.responds(to: #selector(BaseTextFieldDelegate.textFieldTextDidChanged(_:))) {
+        if let customDelete = self.delegate as? LHBaseTextFieldDelegate, customDelete.responds(to: #selector(LHBaseTextFieldDelegate.textFieldTextDidChanged(_:))) {
             customDelete.textFieldTextDidChanged?(self)
         }
     }

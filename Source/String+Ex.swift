@@ -185,6 +185,10 @@ public extension String {
     var encodeUrlPercentEncoding: String {
         return self.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? self
     }
+    
+    var localizedString: String {
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
+    }
 }
 
 public extension NSMutableAttributedString {
