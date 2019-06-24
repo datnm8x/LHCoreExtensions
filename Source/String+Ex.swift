@@ -189,6 +189,21 @@ public extension String {
     var localizedString: String {
         return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
     }
+    
+    func substring(from: Int) -> String? {
+        guard from >= 0 else { return nil }
+        return nsString.substring(from: from)
+    }
+    
+    func substring(to: Int) -> String? {
+        guard to >= 0, to < nsString.length else { return nil }
+        return nsString.substring(to: to)
+    }
+    
+    func substring(from: Int, to: Int) -> String? {
+        guard from >= 0, to >= 0, to > from, to < nsString.length else { return nil }
+        return nsString.substring(with: NSMakeRange(from, to - from))
+    }
 }
 
 public extension NSMutableAttributedString {
