@@ -142,25 +142,27 @@ public extension CALayer {
     }
 }
 
+public extension UIRectCorner {
+    
+    var isAll: Bool {
+        if self.contains(.allCorners) { return true }
+        if !self.contains(.topLeft) { return false }
+        if !self.contains(.topRight) { return false }
+        if !self.contains(.bottomLeft) { return false }
+        if !self.contains(.bottomRight) { return false }
+        return true
+    }
+}
+
 @IBDesignable
 open class LHCornerView: UIView {
-    public enum BorderCorner {
-        case <#case#>
-    }
+    private var pCornerRadius: CGFloat = 0.0
+    var cornersAt: UIRectCorner = .allCorners
     
-    @IBInspectable var radiusPercent: CGFloat = 0.5 {
-        didSet {
-            setCornerRadius()
-        }
-    }
-    
-    @IBInspectable var topLeft: Bool = true
-    @IBInspectable var topRight: Bool = true
-    @IBInspectable var bottomLeft: Bool = true
-    @IBInspectable var bottomRight: Bool = true
-    
-    @IBInspectable var constantRadius: CGFloat = -1 {
-        didSet {
+    @IBInspectable override open var cornerRadius: CGFloat {
+        get { return pCornerRadius }
+        set {
+            pCornerRadius = newValue
             setCornerRadius()
         }
     }
@@ -171,38 +173,14 @@ open class LHCornerView: UIView {
     }
     
     private func setCornerRadius() {
-        if topLeft && topRight && bottomLeft && bottomRight{
-            if constantRadius >= 0 {
-                self.layer.cornerRadius = constantRadius
-                self.layer.masksToBounds = true
-                
-            }else{
-                self.layer.cornerRadius = self.frame.size.height*CGFloat(radiusPercent)
-                self.layer.masksToBounds = true
-            }
-            
+        if cornersAt.isAll || pCornerRadius == 0.0 {
+            super.cornerRadius = pCornerRadius
         } else {
-            let radii = (constantRadius >= 0 ) ? constantRadius :self.frame.size.height*CGFloat(radiusPercent)
-            
-            var corners:UInt =  0
-            if topLeft {
-                corners |= UIRectCorner.topLeft.rawValue
-            }
-            if topRight {
-                corners |= UIRectCorner.topRight.rawValue
-            }
-            if bottomLeft {
-                corners |= UIRectCorner.bottomLeft.rawValue
-            }
-            if bottomRight {
-                corners |= UIRectCorner.bottomRight.rawValue
-            }
-            let rectCorner =  UIRectCorner.init(rawValue: corners)
-            
-            let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: rectCorner, cornerRadii: CGSize(width: radii, height: radii))
+            let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersAt, cornerRadii: CGSize(width: pCornerRadius, height: pCornerRadius))
             let maskLayer = CAShapeLayer()
             maskLayer.frame = self.bounds
             maskLayer.path = path.cgPath
             self.layer.mask = maskLayer
         }
+    }
 }
