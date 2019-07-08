@@ -9,11 +9,11 @@
 import UIKit
 import LHCoreExtensions
 
-class MainViewController: BaseViewController {
+class MainViewController: LHBaseViewController {
     @IBOutlet weak var testCustomV: CustomViewTest!
-    @IBOutlet weak var btnHandler: ButtonHandler!
-    @IBOutlet weak var mCollectionView: BaseCollectionView!
-    @IBOutlet weak var mTableView: BaseTableView!
+    @IBOutlet weak var btnHandler: LHButtonHandler!
+    @IBOutlet weak var mCollectionView: LHBaseCollectionView!
+    @IBOutlet weak var mTableView: LHBaseTableView!
     
     var dataTest: [String] = [String]()
     

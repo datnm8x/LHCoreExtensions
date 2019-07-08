@@ -11,9 +11,9 @@ import UIKit
 import LHCoreExtensions
 import SnapKit
 
-class PushViewController: BaseViewController {
+class PushViewController: LHBaseViewController {
     weak var beforeVC: UIViewController?
-    var buttonAction: ButtonHandler = ButtonHandler(frame: CGRect(x: 20, y: 150, width: 300, height: 44))
+    var buttonAction: LHButtonHandler = LHButtonHandler(frame: CGRect(x: 20, y: 150, width: 300, height: 44))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +32,9 @@ class PushViewController: BaseViewController {
 }
 
 class PushViewController1: PushViewController {
+    @IBOutlet weak var testCornerView: LHCornerView!
+    @IBOutlet weak var testView: TestCornerView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,6 +42,19 @@ class PushViewController1: PushViewController {
             guard let pushVC = PushViewController2.instanceStoryboard(UIStoryboard(name: "Main", bundle: nil)) else { return }
             self?.navigationController?.pushViewController(pushVC, animated: true)
         }
+        
+        testCornerView.backgroundColor = .lightGray
+        testCornerView.cornersAt = UIRectCorner.topLeft.union(.topRight)
+        testCornerView.cornerRadius = 15
+    }
+    
+    override func viewDidAppearAtFirst(_ atFirst: Bool, animated: Bool) {
+        super.viewDidAppearAtFirst(atFirst, animated: animated)
+        guard atFirst else { return }
+        
+        testView.backgroundColor = .lightGray
+        testView.cornersAt = UIRectCorner.topLeft.union(.topRight)
+        testView.setCornerRadiusTest(cornerRadius: 15, borderWidth: 5, borderColor: .red)
     }
 }
 
@@ -107,3 +123,37 @@ class PushViewController6: PushViewController {
         }
     }
 }
+
+class TestCornerView: UIView {
+    private var pCornerRadius: CGFloat = 0.0
+    private var pBorderWidth: CGFloat = 0.0
+    private var pBorderColor: UIColor?
+    open var cornersAt: UIRectCorner = .allCorners {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    func setCornerRadiusTest(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
+        pCornerRadius = cornerRadius
+        pBorderWidth = borderWidth
+        pBorderColor = borderColor
+        setNeedsDisplay()
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersAt, cornerRadii: CGSize(width: pCornerRadius, height: pCornerRadius))
+        path.lineWidth = pBorderWidth
+        pBorderColor?.setStroke()
+        path.stroke()
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = self.bounds
+        maskLayer.path = path.cgPath
+        maskLayer.strokeColor = pBorderColor?.cgColor
+
+        self.layer.mask = maskLayer
+    }
+}
+

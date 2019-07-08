@@ -33,7 +33,6 @@ public extension UIView {
         set {
             layer.cornerRadius = newValue
             layer.masksToBounds = newValue > 0
-            setNeedsLayout()
             layer.setNeedsDisplay()
         }
     }
@@ -42,7 +41,6 @@ public extension UIView {
         get { return layer.borderWidth }
         set {
             layer.borderWidth = newValue
-            setNeedsLayout()
             layer.setNeedsDisplay()
         }
     }
@@ -56,12 +54,11 @@ public extension UIView {
         }
         set {
             layer.borderColor = newValue?.cgColor
-            setNeedsLayout()
             layer.setNeedsDisplay()
         }
     }
     
-    func setCornerRadius(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
+    @objc func setCornerRadius(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
         layer.cornerRadius = cornerRadius
         layer.borderWidth = borderWidth
         layer.borderColor = borderColor?.cgColor
@@ -154,33 +151,61 @@ public extension UIRectCorner {
     }
 }
 
-@IBDesignable
 open class LHCornerView: UIView {
     private var pCornerRadius: CGFloat = 0.0
-    var cornersAt: UIRectCorner = .allCorners
+    private var pBorderWidth: CGFloat = 0.0
+    private var pBorderColor: UIColor?
+    open var cornersAt: UIRectCorner = .allCorners {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     
-    @IBInspectable override open var cornerRadius: CGFloat {
+    override open var cornerRadius: CGFloat {
         get { return pCornerRadius }
         set {
             pCornerRadius = newValue
-            setCornerRadius()
+            setNeedsDisplay()
         }
     }
     
-    override open func layoutSubviews() {
-        super.layoutSubviews()
-        setCornerRadius()
+    override open var borderWidth: CGFloat {
+        get { return pBorderWidth }
+        set {
+            pBorderWidth = newValue
+            setNeedsDisplay()
+        }
     }
     
-    private func setCornerRadius() {
-        if cornersAt.isAll || pCornerRadius == 0.0 {
-            super.cornerRadius = pCornerRadius
-        } else {
-            let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersAt, cornerRadii: CGSize(width: pCornerRadius, height: pCornerRadius))
-            let maskLayer = CAShapeLayer()
-            maskLayer.frame = self.bounds
-            maskLayer.path = path.cgPath
-            self.layer.mask = maskLayer
+    override open var borderColor: UIColor? {
+        get {
+            return pBorderColor
         }
+        set {
+            pBorderColor = newValue
+            setNeedsDisplay()
+        }
+    }
+    
+    @objc override open func setCornerRadius(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
+        pCornerRadius = cornerRadius
+        pBorderWidth = borderWidth
+        pBorderColor = borderColor
+        setNeedsDisplay()
+    }
+    
+    override open func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersAt, cornerRadii: CGSize(width: pCornerRadius, height: pCornerRadius))
+        path.lineWidth = pBorderWidth
+        pBorderColor?.setStroke()
+        path.stroke()
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = self.bounds
+        maskLayer.path = path.cgPath
+        maskLayer.strokeColor = pBorderColor?.cgColor
+        
+        self.layer.mask = maskLayer
     }
 }
