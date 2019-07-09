@@ -20,4 +20,22 @@ public extension UIColor {
         let blue = CGFloat( rgb & 0x0000FF) / CGFloat(255)
         self.init(red: red, green: green, blue: blue, alpha: alph)
     }
+    
+    func toImage(_ size: CGSize = CGSize(width: 8, height: 8)) -> UIImage? {
+        if #available(iOS 10.0, *) {
+            return UIGraphicsImageRenderer(size: size).image { (rendererContext) in
+                self.setFill()
+                rendererContext.fill(CGRect(origin: .zero, size: size))
+            }
+        } else {
+            // Fallback on earlier versions
+            let rect = CGRect(origin: CGPoint.zero, size: size)
+            UIGraphicsBeginImageContextWithOptions(size, false, 0)
+            self.setFill()
+            UIRectFill(rect)
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return image
+        }
+    }
 }
