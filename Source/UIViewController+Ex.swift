@@ -21,7 +21,13 @@ public extension UIViewController {
         return self.tabBarController?.tabBar.intrinsicContentSize.height ?? 0
     }
     
-    var safeAreaInsets: UIEdgeInsets { return UIDevice.safeAreaInsets }
+    var safeAreaInsets: UIEdgeInsets {
+        var _safeAreaInsets = UIDevice.safeAreaInsets
+        _safeAreaInsets.top += self.navigationController?.navigationBar.intrinsicContentSize.height ?? 0
+        _safeAreaInsets.bottom += self.tabBarController?.tabBar.intrinsicContentSize.height ?? 0
+        
+        return _safeAreaInsets
+    }
     
     var topMostViewController: UIViewController {
         if let viewController = self as? UINavigationController {

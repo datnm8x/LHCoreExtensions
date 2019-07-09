@@ -24,9 +24,9 @@ public extension UIDevice {
     
     static var safeAreaInsets: UIEdgeInsets {
         if #available(iOS 11.0, *) {
-            return UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets.zero
+            return UIApplication.shared.windows.first?.safeAreaInsets ?? UIEdgeInsets.zero
         } else {
-            var layoutMargins = UIApplication.shared.keyWindow?.layoutMargins ?? UIEdgeInsets.zero
+            var layoutMargins = UIApplication.shared.windows.first?.layoutMargins ?? UIEdgeInsets.zero
             layoutMargins.top -= (layoutMargins.left + layoutMargins.right) / 2
             layoutMargins.bottom -= (layoutMargins.left + layoutMargins.right) / 2
             layoutMargins.left = 0
