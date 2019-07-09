@@ -21,6 +21,19 @@ public extension UIDevice {
     
     static var height: CGFloat { return UIScreen.height }
     static var width: CGFloat { return UIScreen.width }
+    
+    static var safeAreaInsets: UIEdgeInsets {
+        if #available(iOS 11.0, *) {
+            return UIApplication.shared.keyWindow?.safeAreaInsets ?? UIEdgeInsets.zero
+        } else {
+            var layoutMargins = UIApplication.shared.keyWindow?.layoutMargins ?? UIEdgeInsets.zero
+            layoutMargins.top -= (layoutMargins.left + layoutMargins.right) / 2
+            layoutMargins.bottom -= (layoutMargins.left + layoutMargins.right) / 2
+            layoutMargins.left = 0
+            layoutMargins.right = 0
+            return layoutMargins
+        }
+    }
 }
 
 public extension UIScreen {
