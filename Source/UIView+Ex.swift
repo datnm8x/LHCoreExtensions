@@ -248,3 +248,169 @@ open class LHCornerView: UIView {
         self.layer.mask = maskLayer
     }
 }
+
+public extension CAGradientLayerType {
+    static let linear = CAGradientLayerType.axial
+}
+
+open class LHGradientView: UIView {
+    /// The direction of the gradient.
+    public enum Direction: String {
+        /// The gradient is vertical.
+        case vertical = "vertical"
+        
+        /// The gradient is horizontal
+        case horizontal = "horizontal"
+    }
+    
+    // MARK: - Class methods
+    open override class var layerClass : AnyClass {
+        return CAGradientLayer.self
+    }
+    
+    // MARK: - Public properties
+    open var gradientLayer: CAGradientLayer {
+        return layer as! CAGradientLayer
+    }
+    
+    open var direction: Direction = .vertical { didSet { updateGradient() } }
+    open var colors: [UIColor]? { didSet { updateGradient() } }
+    open var locations: [Float]? { didSet { updateGradient() } }
+//    open var endPoint: CGPoint = CGPoint(x: 0.5, y: 1) { didSet { updateGradient() } }
+//    open var startPoint: CGPoint = CGPoint(x: 0.5, y: 0) { didSet { updateGradient() } }
+    open var gradientType: CAGradientLayerType = .linear { didSet { updateGradient() } }
+    
+    open func updateGradient() {
+        gradientLayer.type = gradientType
+        gradientLayer.locations = locations?.map({ (loc) -> NSNumber in
+            return NSNumber(value: loc)
+        })
+        gradientLayer.colors = colors
+        if direction == .vertical {
+            gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+            gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        } else {
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        }
+        
+        setNeedsDisplay()
+    }
+    
+    @IBInspectable
+    var verticalDirection: Bool {
+        get { return direction == .vertical }
+        set { direction = newValue ? .vertical : .horizontal }
+    }
+    
+    @IBInspectable
+    var startColor: UIColor? {
+        didSet {
+            var mColors = colors ?? [UIColor]()
+            if mColors.count > 0 { mColors.remove(at: 0) }
+            
+            if let sColor = startColor {
+                mColors.insert(sColor, at: 0)
+            }
+            
+            self.colors = mColors
+        }
+    }
+    
+    @IBInspectable
+    var endColor: UIColor? {
+        get { return colors?.first }
+        set {
+            var mColors = colors ?? [UIColor]()
+            if mColors.count > 1 { mColors.remove(at: 1) }
+            
+            if let eColor = newValue {
+                mColors.append(eColor)
+            }
+            self.colors = mColors
+        }
+    }
+}
+
+open class LHGradientButton: LHButtonHandler {
+    /// The direction of the gradient.
+    public enum Direction: String {
+        /// The gradient is vertical.
+        case vertical = "vertical"
+        
+        /// The gradient is horizontal
+        case horizontal = "horizontal"
+    }
+    
+    // MARK: - Class methods
+    open override class var layerClass : AnyClass {
+        return CAGradientLayer.self
+    }
+    
+    // MARK: - Public properties
+    open var gradientLayer: CAGradientLayer {
+        return layer as! CAGradientLayer
+    }
+    
+    open var direction: Direction = .vertical { didSet { updateGradient() } }
+    open var colors: [UIColor]? { didSet { updateGradient() } }
+    open var locations: [Float]? { didSet { updateGradient() } }
+    //    open var endPoint: CGPoint = CGPoint(x: 0.5, y: 1) { didSet { updateGradient() } }
+    //    open var startPoint: CGPoint = CGPoint(x: 0.5, y: 0) { didSet { updateGradient() } }
+    open var gradientType: CAGradientLayerType = .linear { didSet { updateGradient() } }
+    
+    open func updateGradient() {
+        gradientLayer.type = gradientType
+        gradientLayer.locations = locations?.map({ (loc) -> NSNumber in
+            return NSNumber(value: loc)
+        })
+        gradientLayer.colors = colors?.map({ (gColor) -> CGColor in
+            return gColor.cgColor
+        })
+        if direction == .vertical {
+            gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+            gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        } else {
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        }
+        
+        setNeedsDisplay()
+        gradientLayer.setNeedsDisplay()
+        gradientLayer.setNeedsLayout()
+    }
+    
+    @IBInspectable
+    var verticalDirection: Bool {
+        get { return direction == .vertical }
+        set { direction = newValue ? .vertical : .horizontal }
+    }
+    
+    @IBInspectable
+    var startColor: UIColor? {
+        didSet {
+            var mColors = colors ?? [UIColor]()
+            if mColors.count > 0 { mColors.remove(at: 0) }
+            
+            if let sColor = startColor {
+                mColors.insert(sColor, at: 0)
+            }
+            
+            self.colors = mColors
+        }
+    }
+    
+    @IBInspectable
+    var endColor: UIColor? {
+        get { return colors?.first }
+        set {
+            var mColors = colors ?? [UIColor]()
+            if mColors.count > 1 { mColors.remove(at: 1) }
+            
+            if let eColor = newValue {
+                mColors.append(eColor)
+            }
+            self.colors = mColors
+        }
+    }
+}
