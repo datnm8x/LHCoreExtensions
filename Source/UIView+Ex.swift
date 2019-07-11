@@ -28,20 +28,22 @@ public extension UIView {
     }
     
     // IBInspectable border UIView
-    @IBInspectable var cornerRadius: CGFloat {
-        get { return layer.cornerRadius }
+    @IBInspectable var cornerRadius: Float {
+        get { return Float(layer.cornerRadius) }
         set {
-            layer.cornerRadius = newValue
             layer.masksToBounds = newValue > 0
-            layer.setNeedsDisplay()
+            layer.cornerRadius = CGFloat(newValue)
+            setNeedsLayout()
+            setNeedsDisplay()
         }
     }
     
-    @IBInspectable var borderWidth: CGFloat {
-        get { return layer.borderWidth }
+    @IBInspectable var borderWidth: Float {
+        get { return Float(layer.borderWidth) }
         set {
-            layer.borderWidth = newValue
-            layer.setNeedsDisplay()
+            layer.borderWidth = CGFloat(newValue)
+            setNeedsLayout()
+            setNeedsDisplay()
         }
     }
     
@@ -54,7 +56,19 @@ public extension UIView {
         }
         set {
             layer.borderColor = newValue?.cgColor
-            layer.setNeedsDisplay()
+            setNeedsDisplay()
+            setNeedsLayout()
+        }
+    }
+    
+    @IBInspectable var maskToBounds: Bool {
+        get {
+            return layer.masksToBounds
+        }
+        set {
+            layer.masksToBounds = newValue
+            setNeedsLayout()
+            setNeedsDisplay()
         }
     }
     
@@ -137,6 +151,27 @@ public extension CALayer {
         }
         set { borderColor = newValue?.cgColor }
     }
+    
+    func applySketchShadow(
+        color: UIColor = .black,
+        opacity: Float = 1.0,
+        x: CGFloat = 0,
+        y: CGFloat = -3,
+        blur: CGFloat = 6,
+        spread: CGFloat = 0)
+    {
+        shadowColor = color.cgColor
+        shadowOpacity = opacity
+        shadowOffset = CGSize(width: x, height: y)
+        shadowRadius = blur / 2.0
+        if spread == 0 {
+            shadowPath = nil
+        } else {
+            let dx = -spread
+            let rect = bounds.insetBy(dx: dx, dy: dx)
+            shadowPath = UIBezierPath(rect: rect).cgPath
+        }
+    }
 }
 
 public extension UIRectCorner {
@@ -157,22 +192,25 @@ open class LHCornerView: UIView {
     private var pBorderColor: UIColor?
     open var cornersAt: UIRectCorner = .allCorners {
         didSet {
+            setNeedsLayout()
             setNeedsDisplay()
         }
     }
     
-    override open var cornerRadius: CGFloat {
-        get { return pCornerRadius }
+    override open var cornerRadius: Float {
+        get { return Float(pCornerRadius) }
         set {
-            pCornerRadius = newValue
+            pCornerRadius = CGFloat(newValue)
+            setNeedsLayout()
             setNeedsDisplay()
         }
     }
     
-    override open var borderWidth: CGFloat {
-        get { return pBorderWidth }
+    override open var borderWidth: Float {
+        get { return Float(pBorderWidth) }
         set {
-            pBorderWidth = newValue
+            pBorderWidth = CGFloat(newValue)
+            setNeedsLayout()
             setNeedsDisplay()
         }
     }
@@ -183,6 +221,7 @@ open class LHCornerView: UIView {
         }
         set {
             pBorderColor = newValue
+            setNeedsLayout()
             setNeedsDisplay()
         }
     }
