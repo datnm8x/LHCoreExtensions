@@ -139,6 +139,17 @@ public extension UIView {
             }
         }
     }
+    
+    func applySketchShadow(
+        color: UIColor = .black,
+        opacity: Float = 1.0,
+        x: CGFloat = 0,
+        y: CGFloat = -3,
+        blur: CGFloat = 6,
+        spread: CGFloat = 0)
+    {
+        self.layer.applySketchShadow(color: color, opacity: opacity, x: x, y: y, blur: blur, spread: spread)
+    }
 }
 
 public extension CALayer {
