@@ -27,51 +27,6 @@ public extension UIView {
         set { self.frame.size.height = newValue }
     }
     
-    // IBInspectable border UIView
-    @IBInspectable var cornerRadius: Float {
-        get { return Float(layer.cornerRadius) }
-        set {
-            layer.masksToBounds = newValue > 0
-            layer.cornerRadius = CGFloat(newValue)
-            setNeedsLayout()
-            setNeedsDisplay()
-        }
-    }
-    
-    @IBInspectable var borderWidth: Float {
-        get { return Float(layer.borderWidth) }
-        set {
-            layer.borderWidth = CGFloat(newValue)
-            setNeedsLayout()
-            setNeedsDisplay()
-        }
-    }
-    
-    @IBInspectable var borderColor: UIColor? {
-        get {
-            if let layerCgColor = layer.borderColor {
-                return UIColor(cgColor: layerCgColor)
-            }
-            return nil
-        }
-        set {
-            layer.borderColor = newValue?.cgColor
-            setNeedsDisplay()
-            setNeedsLayout()
-        }
-    }
-    
-    @IBInspectable var maskToBounds: Bool {
-        get {
-            return layer.masksToBounds
-        }
-        set {
-            layer.masksToBounds = newValue
-            setNeedsLayout()
-            setNeedsDisplay()
-        }
-    }
-    
     @objc func setCornerRadius(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
         layer.cornerRadius = cornerRadius
         layer.borderWidth = borderWidth
@@ -138,125 +93,6 @@ public extension UIView {
                 self?.transform = CGAffineTransform(rotationAngle: CGFloat.pi * degree / 180.0)
             }
         }
-    }
-    
-    func applySketchShadow(
-        color: UIColor = .black,
-        opacity: Float = 1.0,
-        x: CGFloat = 0,
-        y: CGFloat = -3,
-        blur: CGFloat = 6,
-        spread: CGFloat = 0)
-    {
-        self.layer.applySketchShadow(color: color, opacity: opacity, x: x, y: y, blur: blur, spread: spread)
-    }
-}
-
-public extension CALayer {
-    var borderUIColor: UIColor? {
-        get {
-            if let cgColor = self.borderColor {
-                return UIColor(cgColor: cgColor)
-            }
-            return nil
-        }
-        set { borderColor = newValue?.cgColor }
-    }
-    
-    func applySketchShadow(
-        color: UIColor = .black,
-        opacity: Float = 1.0,
-        x: CGFloat = 0,
-        y: CGFloat = -3,
-        blur: CGFloat = 6,
-        spread: CGFloat = 0)
-    {
-        shadowColor = color.cgColor
-        shadowOpacity = opacity
-        shadowOffset = CGSize(width: x, height: y)
-        shadowRadius = blur / 2.0
-        if spread == 0 {
-            shadowPath = nil
-        } else {
-            let dx = -spread
-            let rect = bounds.insetBy(dx: dx, dy: dx)
-            shadowPath = UIBezierPath(rect: rect).cgPath
-        }
-    }
-}
-
-public extension UIRectCorner {
-    
-    var isAll: Bool {
-        if self.contains(.allCorners) { return true }
-        if !self.contains(.topLeft) { return false }
-        if !self.contains(.topRight) { return false }
-        if !self.contains(.bottomLeft) { return false }
-        if !self.contains(.bottomRight) { return false }
-        return true
-    }
-}
-
-open class LHCornerView: UIView {
-    private var pCornerRadius: CGFloat = 0.0
-    private var pBorderWidth: CGFloat = 0.0
-    private var pBorderColor: UIColor?
-    open var cornersAt: UIRectCorner = .allCorners {
-        didSet {
-            setNeedsLayout()
-            setNeedsDisplay()
-        }
-    }
-    
-    override open var cornerRadius: Float {
-        get { return Float(pCornerRadius) }
-        set {
-            pCornerRadius = CGFloat(newValue)
-            setNeedsLayout()
-            setNeedsDisplay()
-        }
-    }
-    
-    override open var borderWidth: Float {
-        get { return Float(pBorderWidth) }
-        set {
-            pBorderWidth = CGFloat(newValue)
-            setNeedsLayout()
-            setNeedsDisplay()
-        }
-    }
-    
-    override open var borderColor: UIColor? {
-        get {
-            return pBorderColor
-        }
-        set {
-            pBorderColor = newValue
-            setNeedsLayout()
-            setNeedsDisplay()
-        }
-    }
-    
-    @objc override open func setCornerRadius(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
-        pCornerRadius = cornerRadius
-        pBorderWidth = borderWidth
-        pBorderColor = borderColor
-        setNeedsDisplay()
-    }
-    
-    override open func draw(_ rect: CGRect) {
-        super.draw(rect)
-        
-        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersAt, cornerRadii: CGSize(width: pCornerRadius, height: pCornerRadius))
-        path.lineWidth = pBorderWidth
-        pBorderColor?.setStroke()
-        path.stroke()
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        maskLayer.strokeColor = pBorderColor?.cgColor
-        
-        self.layer.mask = maskLayer
     }
 }
 
@@ -344,5 +180,394 @@ public extension CAGradientLayerType {
             }
             self.colors = mColors
         }
+    }
+}
+
+public extension UIRectCorner {
+    var isCornerAll: Bool {
+        if self.contains(.allCorners) { return true }
+        if !self.contains(.topLeft) { return false }
+        if !self.contains(.topRight) { return false }
+        if !self.contains(.bottomLeft) { return false }
+        if !self.contains(.bottomRight) { return false }
+        return true
+    }
+}
+
+extension UIView {
+    @IBInspectable
+    open var cornerRadius: CGFloat {
+        get { return layer.cornerRadius }
+        set {
+            layer.cornerRadius = newValue
+            updateBorderCorners()
+        }
+    }
+    
+    @IBInspectable
+    open var borderWidth: CGFloat {
+        get { return layer.borderWidth }
+        set {
+            layer.borderWidth = newValue
+            updateBorderCorners()
+        }
+    }
+    
+    @IBInspectable
+    open var borderColor: UIColor? {
+        get { return layer.borderColor == nil ? nil : UIColor(cgColor: layer.borderColor!) }
+        set {
+            layer.borderColor = newValue?.cgColor
+            updateBorderCorners()
+        }
+    }
+    
+    @objc fileprivate func updateBorderCorners() {
+        if cornerRadius > 0 || borderWidth > 0 { clipsToBounds = true }
+        setNeedsDisplay()
+    }
+}
+
+@IBDesignable
+open class LHRoundCornerView: UIView {
+    fileprivate var privateCornerRadius: CGFloat = 0.0 { didSet { updateBorderCorners() } }
+    fileprivate var privateBorderWidth: CGFloat = 0.0 { didSet { updateBorderCorners() } }
+    fileprivate var privateBorderColor: UIColor? = nil { didSet { updateBorderCorners() } }
+    //    open override class var layerClass : AnyClass { return CAShapeLayer.self }
+    //    var shapeLayer: CAShapeLayer { return self.layer as! CAShapeLayer }
+    open var cornersAt: UIRectCorner = .allCorners { didSet { updateBorderCorners() } }
+    
+    override open var cornerRadius: CGFloat {
+        get { return self.privateCornerRadius }
+        set { self.privateCornerRadius = newValue }
+    }
+    
+    override open var borderWidth: CGFloat {
+        get { return self.privateBorderWidth }
+        set { self.privateBorderWidth = newValue }
+    }
+    
+    override open var borderColor: UIColor? {
+        get { return self.privateBorderColor }
+        set { self.privateBorderColor = newValue }
+    }
+    
+    @objc override open func setCornerRadius(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
+        self.cornersAt = .allCorners
+        self.cornerRadius = cornerRadius
+        self.borderWidth = borderWidth
+        self.borderColor = borderColor
+    }
+    
+    @objc override fileprivate func updateBorderCorners() {
+        self.clipsToBounds = true
+        setNeedsDisplay()
+    }
+    
+    let maskLayer = CAShapeLayer()
+    
+    override open func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersAt, cornerRadii: CGSize(width: self.cornerRadius, height: self.cornerRadius))
+        path.lineWidth = self.borderWidth * 2.0
+        self.borderColor?.setStroke()
+        path.stroke()
+        
+        maskLayer.frame = self.bounds
+        maskLayer.path = path.cgPath
+        maskLayer.masksToBounds = true
+        layer.masksToBounds = true
+        layer.mask = maskLayer
+        maskLayer.setNeedsDisplay()
+        maskLayer.setNeedsLayout()
+    }
+    
+    override open var clipsToBounds: Bool {
+        get { return true }
+        set { super.clipsToBounds = true }
+    }
+    
+    @IBInspectable
+    var cornerTopLeft: Bool {
+        get { return cornersAt.contains(.topLeft) || cornersAt == .allCorners }
+        set {
+            mergeCorner(.topLeft, isEnable: newValue)
+        }
+    }
+    @IBInspectable
+    var cornerTopRight: Bool {
+        get { return cornersAt.contains(.topRight) || cornersAt == .allCorners }
+        set { mergeCorner(.topRight, isEnable: newValue) }
+    }
+    @IBInspectable
+    var cornerBottomLeft: Bool {
+        get { return cornersAt.contains(.bottomLeft) || cornersAt == .allCorners }
+        set { mergeCorner(.bottomLeft, isEnable: newValue) }
+    }
+    @IBInspectable
+    var cornerBottomRight: Bool {
+        get { return cornersAt.contains(.bottomRight) || cornersAt == .allCorners }
+        set { mergeCorner(.bottomRight, isEnable: newValue) }
+    }
+    
+    func mergeCorner(_ corner: UIRectCorner, isEnable: Bool) {
+        if isEnable {
+            if cornersAt.contains(corner) || cornersAt == .allCorners {
+                return
+            }
+            cornersAt.formUnion(corner)
+        } else {
+            cornersAt.remove(corner)
+        }
+        setNeedsDisplay()
+    }
+}
+
+/*
+extension CALayer {
+    func applySketchShadow(
+        color: UIColor = .black,
+        opacity: Float = 1.0,
+        x: CGFloat = 0,
+        y: CGFloat = -3,
+        blur: CGFloat = 6,
+        spread: CGFloat = 0)
+    {
+        shadowColor = color.cgColor
+        shadowOpacity = opacity
+        shadowOffset = CGSize(width: x, height: y)
+        shadowRadius = blur / 2.0
+        if spread == 0 {
+            shadowPath = nil
+        } else {
+            let dx = -spread
+            let rect = bounds.insetBy(dx: dx, dy: dx)
+            shadowPath = UIBezierPath(rect: rect).cgPath
+        }
+        masksToBounds = false
+    }
+}
+*/
+
+@IBDesignable
+open class LHRoundCornerShadowView: UIView {
+    let containerView = LHRoundCornerView()
+    
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        commonLayoutViews()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        commonLayoutViews()
+    }
+    
+    // MARK: - Init View
+    func commonLayoutViews() {
+        // set the shadow of the view's layer
+        super.backgroundColor = UIColor.clear
+        layer.backgroundColor = UIColor.clear.cgColor
+        clipsToBounds = false
+        
+        // set the cornerRadius of the containerView's layer
+        containerView.backgroundColor = UIColor.white
+        containerView.clipsToBounds = true
+        insertSubview(containerView, at: 0)
+        
+        // add constraints
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // pin the containerView to the edges to the view
+        let constraints = [
+            NSLayoutConstraint(item: containerView, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: containerView, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: containerView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: containerView, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0),
+        ]
+        super.addConstraints(constraints)
+        constraints.forEach { (constraint) in
+            constraint.isActive = true
+        }
+    }
+    
+    // MARK: - Shadow effects
+    override open var clipsToBounds: Bool {
+        get { return false }
+        set { super.clipsToBounds = false }
+    }
+    
+    override open var backgroundColor: UIColor? {
+        get { return containerView.backgroundColor }
+        set { containerView.backgroundColor = newValue }
+    }
+    
+    @IBInspectable
+    open var shadowColor: UIColor? {
+        didSet {
+            layer.shadowColor = shadowColor?.cgColor
+            setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable
+    open var shadowOpacity: Float = 1.0 {
+        didSet {
+            layer.shadowOpacity = shadowOpacity
+            setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable
+    open var shadowOffset: CGPoint = CGPoint(x: 0, y: -3) {
+        didSet {
+            layer.shadowOffset = CGSize(width: shadowOffset.x, height: shadowOffset.y)
+            setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable
+    open var shadowBlur: CGFloat = 6.0 {
+        didSet {
+            layer.shadowRadius = shadowBlur / 2
+            setNeedsDisplay()
+        }
+    }
+    
+    @IBInspectable
+    open var shadowSpread: CGFloat = 0.0 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    override open func draw(_ rect: CGRect) {
+        super.draw(rect)
+        
+        if shadowSpread == 0.0 { layer.shadowPath = nil }
+        else {
+            let dx = -shadowSpread
+            let rect = bounds.insetBy(dx: dx, dy: dx)
+            layer.shadowPath = UIBezierPath(rect: rect).cgPath
+        }
+    }
+    
+    // MARK: - override proccess for subviews
+    override open func addSubview(_ view: UIView) {
+        guard view != containerView else {
+            super.addSubview(view)
+            return
+        }
+        containerView.addSubview(view)
+    }
+    
+    override open func insertSubview(_ view: UIView, at index: Int) {
+        guard view != containerView else {
+            super.insertSubview(view, at: index)
+            return
+        }
+        containerView.insertSubview(view, at: index)
+    }
+    
+    open override func insertSubview(_ view: UIView, aboveSubview siblingSubview: UIView) {
+        guard view != containerView else {
+            super.insertSubview(view, aboveSubview: siblingSubview)
+            return
+        }
+        containerView.insertSubview(view, aboveSubview: siblingSubview)
+    }
+    
+    open override func insertSubview(_ view: UIView, belowSubview siblingSubview: UIView) {
+        guard view != containerView else {
+            super.insertSubview(view, belowSubview: siblingSubview)
+            return
+        }
+        containerView.insertSubview(view, belowSubview: siblingSubview)
+    }
+    
+    override open func addConstraint(_ constraint: NSLayoutConstraint) {
+        processAddConstraint(constraint)
+    }
+    
+    fileprivate func processAddConstraint(_ constraint: NSLayoutConstraint) {
+        guard let firstItem = constraint.firstItem as? UIView, let seconItem = constraint.secondItem as? UIView else {
+            super.addConstraint(constraint)
+            return
+        }
+        
+        if firstItem != self && seconItem != self {
+            containerView.addConstraint(constraint)
+        } else if firstItem == self && seconItem != self {
+            let copyConstraint = NSLayoutConstraint(item: containerView, attribute: constraint.firstAttribute, relatedBy: constraint.relation, toItem: constraint.secondItem, attribute: constraint.secondAttribute, multiplier: constraint.multiplier, constant: constraint.constant)
+            containerView.addConstraint(copyConstraint)
+        } else if seconItem == self && firstItem != self {
+            let copyConstraint = NSLayoutConstraint(item: firstItem, attribute: constraint.firstAttribute, relatedBy: constraint.relation, toItem: containerView, attribute: constraint.secondAttribute, multiplier: constraint.multiplier, constant: constraint.constant)
+            containerView.addConstraint(copyConstraint)
+        } else {
+            super.addConstraint(constraint)
+        }
+    }
+    
+    open override func addConstraints(_ constraints: [NSLayoutConstraint]) {
+        constraints.forEach { [weak self] (constraint) in
+            self?.processAddConstraint(constraint)
+        }
+    }
+    
+    // MARK: - Corner effects
+    open var cornersAt: UIRectCorner {
+        get { return containerView.cornersAt }
+        set { containerView.cornersAt = newValue }
+    }
+    
+    override open var cornerRadius: CGFloat {
+        get { return containerView.cornerRadius }
+        set { containerView.cornerRadius = newValue }
+    }
+    
+    override open var borderWidth: CGFloat {
+        get { return containerView.borderWidth }
+        set { containerView.borderWidth = newValue }
+    }
+    
+    override open var borderColor: UIColor? {
+        get { return containerView.borderColor }
+        set { containerView.borderColor = newValue }
+    }
+    
+    @IBInspectable
+    var cornerTopLeft: Bool {
+        get { return containerView.cornerTopLeft }
+        set { containerView.cornerTopLeft = newValue }
+    }
+    @IBInspectable
+    var cornerTopRight: Bool {
+        get { return containerView.cornerTopRight }
+        set { containerView.cornerTopRight = newValue }
+    }
+    @IBInspectable
+    var cornerBottomLeft: Bool {
+        get { return containerView.cornerBottomLeft }
+        set { containerView.cornerBottomLeft = newValue }
+    }
+    @IBInspectable
+    var cornerBottomRight: Bool {
+        get { return containerView.cornerBottomRight }
+        set { containerView.cornerBottomRight = newValue }
+    }
+    
+    @objc override open func setCornerRadius(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
+        containerView.setCornerRadius(cornerRadius: cornerRadius, borderWidth: borderWidth, borderColor: borderColor)
+    }
+    
+    public func applySketchShadow(color: UIColor = .black, opacity: Float = 1.0, x: CGFloat = 0, y: CGFloat = -3, blur: CGFloat = 6, spread: CGFloat = 0) {
+        self.shadowColor = color
+        self.shadowOpacity = opacity
+        self.shadowOffset = CGPoint(x: x, y: y)
+        self.shadowBlur = blur
+        self.shadowSpread = spread
     }
 }

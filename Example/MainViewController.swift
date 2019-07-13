@@ -34,7 +34,7 @@ class MainViewController: LHBaseViewController {
         for index: Int in 0..<50 {
             dataTest.append("dataTest: \(index)")
         }
-        
+        self.view.borderWidth
         mTableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: UITableViewCell.reuseIdentifier)
         
         testTableViewEx()
