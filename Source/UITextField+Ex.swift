@@ -180,6 +180,20 @@ open class LHBaseTextField: UITextField {
         }
     }
     
+    @IBInspectable open var placeholderColor: UIColor = UIColor.lightGray.withAlphaComponent(0.7) {
+        didSet {
+            let attributes = [ NSAttributedString.Key.foregroundColor: placeholderColor ]
+            attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: attributes)
+        }
+    }
+    
+    override open var placeholder: String? {
+        didSet {
+            let attributes = [ NSAttributedString.Key.foregroundColor: placeholderColor ]
+            attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: attributes)
+        }
+    }
+    
     override public init(frame: CGRect) {
         super.init(frame: frame)
         
