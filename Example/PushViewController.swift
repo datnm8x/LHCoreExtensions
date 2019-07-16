@@ -32,7 +32,7 @@ class PushViewController: LHBaseViewController {
 }
 
 class PushViewController1: PushViewController {
-    @IBOutlet weak var testCornerView: LHCornerView!
+    @IBOutlet weak var testCornerView: LHRoundCornerView!
     @IBOutlet weak var testView: TestCornerView!
     
     override func viewDidLoad() {

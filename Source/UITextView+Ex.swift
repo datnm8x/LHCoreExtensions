@@ -67,13 +67,18 @@ open class LHBaseTextView: UITextView {
     open var placeholder: String? {
         didSet {
             placeholderLabel.text = placeholder
-            handlePlaceholderLabel()
         }
     }
     
     override open var text: String! {
         didSet {
-            textChanged(nil)
+            handleTextDidChanged(nil)
+        }
+    }
+    
+    open override var attributedText: NSAttributedString! {
+        didSet {
+            handleTextDidChanged(nil)
         }
     }
     
@@ -83,60 +88,42 @@ open class LHBaseTextView: UITextView {
         }
     }
     
-    var constraintsPlaceHolder: [NSLayoutConstraint]!
+    override open var textAlignment: NSTextAlignment {
+        didSet {
+            placeholderLabel.textAlignment = textAlignment
+        }
+    }
+    
+    var placeholderLabelConstraints = [NSLayoutConstraint]()
+    
     fileprivate func commonInit() {
         let cFont = self.font ?? UIFont.systemFont(ofSize: 14.0)
         self.font = cFont
         
-        placeholderLabel.font = self.font
+        placeholderLabel.font = font
         placeholderLabel.textColor = placeholderColor
+        placeholderLabel.textAlignment = textAlignment
         placeholderLabel.text = placeholder
-        
+        placeholderLabel.numberOfLines = 0
+        placeholderLabel.backgroundColor = UIColor.clear
+        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(placeholderLabel)
+        updateConstraintsForPlaceholderLabel()
         
-        let constraints = [
-            NSLayoutConstraint(item: placeholderLabel, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: 1.0, constant: contentInset.left + textContainerInset.left),
-            NSLayoutConstraint(item: placeholderLabel, attribute: .right, relatedBy: .equal, toItem: self, attribute: .right, multiplier: 1.0, constant: contentInset.right + textContainerInset.right),
-            NSLayoutConstraint(item: placeholderLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: contentInset.bottom + textContainerInset.bottom),
-        ]
-        self.addConstraints(constraints)
-        constraintsPlaceHolder = constraints
-        
-        let center = NotificationCenter.default
-        center.addObserver(
+        NotificationCenter.default.addObserver(
             self,
-            selector: #selector(LHBaseTextView.textChanged(_:)),
+            selector: #selector(handleTextDidChanged(_:)),
             name: UITextView.textDidChangeNotification,
             object: nil
         )
         
-        textChanged(nil)
+        handleTextDidChanged(nil)
     }
     
     open override var textContainerInset: UIEdgeInsets {
         didSet {
-            relayoutPlaceHolder()
+            updateConstraintsForPlaceholderLabel()
         }
-    }
-    
-    open override var contentInset: UIEdgeInsets {
-        didSet {
-            relayoutPlaceHolder()
-        }
-    }
-    
-    func relayoutPlaceHolder() {
-        constraintsPlaceHolder?.forEach({ (constraint) in
-            switch constraint.firstAttribute {
-            case .left:
-                constraint.constant = contentInset.left + textContainerInset.left
-            case .right:
-                constraint.constant = contentInset.right + textContainerInset.right
-            case .top:
-                constraint.constant = contentInset.top + textContainerInset.top
-            default: break
-            }
-        })
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -145,17 +132,17 @@ open class LHBaseTextView: UITextView {
         commonInit()
     }
     
-    override init(frame: CGRect, textContainer: NSTextContainer?) {
+    override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         
         commonInit()
     }
     
-    convenience init() {
+    public convenience init() {
         self.init(frame: CGRect.zero, textContainer: nil)
     }
     
-    convenience init(frame: CGRect) {
+    public convenience init(frame: CGRect) {
         self.init(frame: frame, textContainer: nil)
     }
     
@@ -169,11 +156,40 @@ open class LHBaseTextView: UITextView {
         commonInit()
     }
     
-    @objc func textChanged(_ notification:Notification?) {
+    @objc func handleTextDidChanged(_ notification:Notification?) {
         handlePlaceholderLabel()
     }
     
     func handlePlaceholderLabel() {
         placeholderLabel.isHidden = !String.isEmpty(text)
+    }
+    
+    func updateConstraintsForPlaceholderLabel() {
+        var newConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-(\(textContainerInset.left + textContainer.lineFragmentPadding))-[placeholder]",
+            options: [],
+            metrics: nil,
+            views: ["placeholder": placeholderLabel])
+        newConstraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|-(\(textContainerInset.top))-[placeholder]",
+            options: [],
+            metrics: nil,
+            views: ["placeholder": placeholderLabel])
+        newConstraints.append(NSLayoutConstraint(
+            item: placeholderLabel,
+            attribute: .width,
+            relatedBy: .equal,
+            toItem: self,
+            attribute: .width,
+            multiplier: 1.0,
+            constant: -(textContainerInset.left + textContainerInset.right + textContainer.lineFragmentPadding * 2.0)
+        ))
+        removeConstraints(placeholderLabelConstraints)
+        addConstraints(newConstraints)
+        placeholderLabelConstraints = newConstraints
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        placeholderLabel.preferredMaxLayoutWidth = textContainer.size.width - textContainer.lineFragmentPadding * 2.0
     }
 }
