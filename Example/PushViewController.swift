@@ -32,8 +32,8 @@ class PushViewController: LHBaseViewController {
 }
 
 class PushViewController1: PushViewController {
-    @IBOutlet weak var testCornerView: LHRoundCornerView!
-    @IBOutlet weak var testView: TestCornerView!
+    @IBOutlet weak var testCornerView: LHRoundShadowView!
+    @IBOutlet weak var testGradientView: LHGradientView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,9 +52,7 @@ class PushViewController1: PushViewController {
         super.viewDidAppearAtFirst(atFirst, animated: animated)
         guard atFirst else { return }
         
-        testView.backgroundColor = .lightGray
-        testView.cornersAt = UIRectCorner.topLeft.union(.topRight)
-        testView.setCornerRadiusTest(cornerRadius: 15, borderWidth: 5, borderColor: .red)
+        testGradientView.direction = .position((startPoint: CGPoint(x: 0, y: 0), endPoint: CGPoint(x: 1, y: 1)))
     }
 }
 

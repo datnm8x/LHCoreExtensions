@@ -23,15 +23,6 @@ open class LHButtonHandler: UIButton {
 }
 
 @IBDesignable open class LHGradientButton: LHButtonHandler {
-    /// The direction of the gradient.
-    public enum Direction: String {
-        /// The gradient is vertical.
-        case vertical = "vertical"
-        
-        /// The gradient is horizontal
-        case horizontal = "horizontal"
-    }
-    
     // MARK: - Class methods
     open override class var layerClass : AnyClass {
         return CAGradientLayer.self
@@ -42,7 +33,7 @@ open class LHButtonHandler: UIButton {
         return layer as! CAGradientLayer
     }
     
-    open var direction: Direction = .vertical { didSet { updateGradient() } }
+    open var direction: LHGradientDirection = .vertical { didSet { updateGradient() } }
     open var colors: [UIColor]? { didSet { updateGradient() } }
     open var locations: [Float]? { didSet { updateGradient() } }
     //    open var endPoint: CGPoint = CGPoint(x: 0.5, y: 1) { didSet { updateGradient() } }
@@ -57,12 +48,18 @@ open class LHButtonHandler: UIButton {
         gradientLayer.colors = colors?.map({ (gColor) -> CGColor in
             return gColor.cgColor
         })
-        if direction == .vertical {
+        
+        switch direction {
+        case .vertical:
             gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
             gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        } else {
+            
+        case .horizontal:
             gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        case .position(let position):
+            gradientLayer.startPoint = position.startPoint
+            gradientLayer.endPoint = position.endPoint
         }
         
         setNeedsDisplay()

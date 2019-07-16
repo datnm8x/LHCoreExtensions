@@ -258,7 +258,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pQE-rO-zBb" customClass="LHShadowCornerView" customModule="LHCoreExtensions">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pQE-rO-zBb" customClass="LHRoundShadowView" customModule="LHCoreExtensions">
                                 <rect key="frame" x="67" y="519" width="240" height="128"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_avatar_sample" translatesAutoresizingMaskIntoConstraints="NO" id="a72-64-a36">
@@ -300,7 +300,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="NO"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aob-E8-Awl" customClass="LHGradientButton" customModule="LHCoreExtensions">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aob-E8-Awl" customClass="LHGradientView" customModule="LHCoreExtensions">
                                 <rect key="frame" x="67" y="364" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -318,7 +318,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nDV-2N-OKi">
-                                <rect key="frame" x="82" y="241" width="240" height="128"/>
+                                <rect key="frame" x="68" y="226" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -327,7 +327,7 @@
                     </view>
                     <connections>
                         <outlet property="testCornerView" destination="pQE-rO-zBb" id="THl-2l-k5a"/>
-                        <outlet property="testView" destination="aob-E8-Awl" id="B4Y-3p-yMe"/>
+                        <outlet property="testGradientView" destination="aob-E8-Awl" id="1fa-ZP-8La"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zpv-hS-du5" userLabel="First Responder" sceneMemberID="firstResponder"/>

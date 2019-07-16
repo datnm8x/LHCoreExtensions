@@ -100,15 +100,29 @@ public extension CAGradientLayerType {
     static let linear = CAGradientLayerType.axial
 }
 
-@IBDesignable open class LHGradientView: UIView {
-    /// The direction of the gradient.
-    public enum Direction: String {
-        /// The gradient is vertical.
-        case vertical = "vertical"
-        
-        /// The gradient is horizontal
-        case horizontal = "horizontal"
+/// The direction of the gradient.
+public enum LHGradientDirection {
+    /// The gradient is vertical.
+    case vertical
+    
+    /// The gradient is horizontal
+    case horizontal
+    
+    /// The gradient with position:
+    /// [0,0] is the bottom-left corner of the layer, [1,1] is the top-right corner.
+    case position((startPoint: CGPoint, endPoint: CGPoint))
+}
+
+public func == (lhs: LHGradientDirection, rhs: LHGradientDirection) -> Bool {
+    switch (lhs, rhs) {
+    case ( .vertical, .vertical): return true
+    case ( .horizontal, .horizontal): return true
+    case (.position(let lhsPoint), .position(let rhsPoint)): return lhsPoint == rhsPoint
+    default: return false
     }
+}
+
+@IBDesignable open class LHGradientView: UIView {
     
     // MARK: - Class methods
     open override class var layerClass : AnyClass {
@@ -120,11 +134,11 @@ public extension CAGradientLayerType {
         return layer as! CAGradientLayer
     }
     
-    open var direction: Direction = .vertical { didSet { updateGradient() } }
+    open var direction: LHGradientDirection = .vertical { didSet { updateGradient() } }
     open var colors: [UIColor]? { didSet { updateGradient() } }
     open var locations: [Float]? { didSet { updateGradient() } }
-//    open var endPoint: CGPoint = CGPoint(x: 0.5, y: 1) { didSet { updateGradient() } }
-//    open var startPoint: CGPoint = CGPoint(x: 0.5, y: 0) { didSet { updateGradient() } }
+    //    open var endPoint: CGPoint = CGPoint(x: 0.5, y: 1) { didSet { updateGradient() } }
+    //    open var startPoint: CGPoint = CGPoint(x: 0.5, y: 0) { didSet { updateGradient() } }
     open var gradientType: CAGradientLayerType = .linear { didSet { updateGradient() } }
     
     open func updateGradient() {
@@ -135,12 +149,18 @@ public extension CAGradientLayerType {
         gradientLayer.colors = colors?.map({ (gColor) -> CGColor in
             return gColor.cgColor
         })
-        if direction == .vertical {
+        
+        switch direction {
+        case .vertical:
             gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
             gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        } else {
+            
+        case .horizontal:
             gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+        case .position(let position):
+            gradientLayer.startPoint = position.startPoint
+            gradientLayer.endPoint = position.endPoint
         }
         
         setNeedsDisplay()
@@ -261,26 +281,50 @@ open class LHRoundCornerView: UIView {
     
     @objc override fileprivate func updateBorderCorners() {
         self.clipsToBounds = true
-        setNeedsDisplay()
+        if #available(iOS 11.0, *) {
+            var caCornerMask: CACornerMask = []
+            if cornersAt.contains(.topLeft) { caCornerMask.formUnion(.layerMinXMinYCorner) }
+            if cornersAt.contains(.bottomLeft) { caCornerMask.formUnion(.layerMinXMaxYCorner) }
+            if cornersAt.contains(.topRight) { caCornerMask.formUnion(.layerMaxXMinYCorner) }
+            if cornersAt.contains(.bottomRight) { caCornerMask.formUnion(.layerMaxXMaxYCorner) }
+            if cornersAt == .allCorners { caCornerMask = [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner] }
+            
+            layer.cornerRadius = cornerRadius
+            layer.borderColor = borderColor?.cgColor
+            layer.borderWidth = borderWidth
+            layer.maskedCorners = caCornerMask
+        } else {
+            setNeedsDisplay()
+        }
     }
     
-    let maskLayer = CAShapeLayer()
+    lazy var maskLayer: CAShapeLayer? = {
+        if #available(iOS 11.0, *) {
+            return nil
+        } else {
+            return CAShapeLayer()
+        }
+    }()
     
     override open func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersAt, cornerRadii: CGSize(width: self.cornerRadius, height: self.cornerRadius))
-        path.lineWidth = self.borderWidth * 2.0
-        self.borderColor?.setStroke()
-        path.stroke()
-        
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        maskLayer.masksToBounds = true
-        layer.masksToBounds = true
-        layer.mask = maskLayer
-        maskLayer.setNeedsDisplay()
-        maskLayer.setNeedsLayout()
+        if #available(iOS 11.0, *) {
+            
+        } else {
+            let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersAt, cornerRadii: CGSize(width: self.cornerRadius, height: self.cornerRadius))
+            path.lineWidth = self.borderWidth * 2.0
+            self.borderColor?.setStroke()
+            path.stroke()
+            
+            maskLayer?.frame = self.bounds
+            maskLayer?.path = path.cgPath
+            maskLayer?.masksToBounds = true
+            layer.masksToBounds = true
+            layer.mask = maskLayer
+            maskLayer?.setNeedsDisplay()
+            maskLayer?.setNeedsLayout()
+        }
     }
     
     override open var clipsToBounds: Bool {
@@ -320,38 +364,24 @@ open class LHRoundCornerView: UIView {
         } else {
             cornersAt.remove(corner)
         }
-        setNeedsDisplay()
+        updateBorderCorners()
     }
-}
-
-/*
-extension CALayer {
-    func applySketchShadow(
-        color: UIColor = .black,
-        opacity: Float = 1.0,
-        x: CGFloat = 0,
-        y: CGFloat = -3,
-        blur: CGFloat = 6,
-        spread: CGFloat = 0)
-    {
-        shadowColor = color.cgColor
-        shadowOpacity = opacity
-        shadowOffset = CGSize(width: x, height: y)
-        shadowRadius = blur / 2.0
-        if spread == 0 {
-            shadowPath = nil
-        } else {
-            let dx = -spread
-            let rect = bounds.insetBy(dx: dx, dy: dx)
-            shadowPath = UIBezierPath(rect: rect).cgPath
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        updateBorderCorners()
+    }
+    
+    open override var frame: CGRect {
+        didSet {
+            updateBorderCorners()
         }
-        masksToBounds = false
     }
 }
-*/
 
 @IBDesignable
-open class LHRoundCornerShadowView: UIView {
+open class LHRoundShadowView: UIView {
     let containerView = LHRoundCornerView()
     
     override public init(frame: CGRect) {
@@ -571,3 +601,29 @@ open class LHRoundCornerShadowView: UIView {
         self.shadowSpread = spread
     }
 }
+
+/*
+extension CALayer {
+    func applySketchShadow(
+        color: UIColor = .black,
+        opacity: Float = 1.0,
+        x: CGFloat = 0,
+        y: CGFloat = -3,
+        blur: CGFloat = 6,
+        spread: CGFloat = 0)
+    {
+        shadowColor = color.cgColor
+        shadowOpacity = opacity
+        shadowOffset = CGSize(width: x, height: y)
+        shadowRadius = blur / 2.0
+        if spread == 0 {
+            shadowPath = nil
+        } else {
+            let dx = -spread
+            let rect = bounds.insetBy(dx: dx, dy: dx)
+            shadowPath = UIBezierPath(rect: rect).cgPath
+        }
+        masksToBounds = false
+    }
+}
+*/
