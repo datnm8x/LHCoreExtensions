@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4CCB207C1D45563900C64D5B"
-               BuildableName = "Cleanup Whitespace"
-               BlueprintName = "Cleanup Whitespace"
-               ReferencedContainer = "container:LHCoreExtensions.xcodeproj">
+               BlueprintIdentifier = "976956868165FB651F76584234260DAD"
+               BuildableName = "Pods_LHCoreExtensions_iOS_Example.framework"
+               BlueprintName = "Pods-LHCoreExtensions iOS-Example"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,10 +45,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4CCB207C1D45563900C64D5B"
-            BuildableName = "Cleanup Whitespace"
-            BlueprintName = "Cleanup Whitespace"
-            ReferencedContainer = "container:LHCoreExtensions.xcodeproj">
+            BlueprintIdentifier = "976956868165FB651F76584234260DAD"
+            BuildableName = "Pods_LHCoreExtensions_iOS_Example.framework"
+            BlueprintName = "Pods-LHCoreExtensions iOS-Example"
+            ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -63,10 +63,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4CCB207C1D45563900C64D5B"
-            BuildableName = "Cleanup Whitespace"
-            BlueprintName = "Cleanup Whitespace"
-            ReferencedContainer = "container:LHCoreExtensions.xcodeproj">
+            BlueprintIdentifier = "976956868165FB651F76584234260DAD"
+            BuildableName = "Pods_LHCoreExtensions_iOS_Example.framework"
+            BlueprintName = "Pods-LHCoreExtensions iOS-Example"
+            ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
