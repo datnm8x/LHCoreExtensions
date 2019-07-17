@@ -108,6 +108,10 @@ public enum LHGradientDirection {
     /// The gradient is horizontal
     case horizontal
     
+    case diagonalUp
+    
+    case diagonalDown
+    
     /// The gradient with position:
     /// [0,0] is the bottom-left corner of the layer, [1,1] is the top-right corner.
     case position((startPoint: CGPoint, endPoint: CGPoint))
@@ -117,13 +121,14 @@ public func == (lhs: LHGradientDirection, rhs: LHGradientDirection) -> Bool {
     switch (lhs, rhs) {
     case ( .vertical, .vertical): return true
     case ( .horizontal, .horizontal): return true
+    case ( .diagonalUp, .diagonalUp): return true
+    case ( .diagonalDown, .diagonalDown): return true
     case (.position(let lhsPoint), .position(let rhsPoint)): return lhsPoint == rhsPoint
     default: return false
     }
 }
 
 @IBDesignable open class LHGradientView: UIView {
-    
     // MARK: - Class methods
     open override class var layerClass : AnyClass {
         return CAGradientLayer.self
@@ -137,8 +142,6 @@ public func == (lhs: LHGradientDirection, rhs: LHGradientDirection) -> Bool {
     open var direction: LHGradientDirection = .vertical { didSet { updateGradient() } }
     open var colors: [UIColor]? { didSet { updateGradient() } }
     open var locations: [Float]? { didSet { updateGradient() } }
-    //    open var endPoint: CGPoint = CGPoint(x: 0.5, y: 1) { didSet { updateGradient() } }
-    //    open var startPoint: CGPoint = CGPoint(x: 0.5, y: 0) { didSet { updateGradient() } }
     open var gradientType: CAGradientLayerType = .linear { didSet { updateGradient() } }
     
     open func updateGradient() {
@@ -158,6 +161,15 @@ public func == (lhs: LHGradientDirection, rhs: LHGradientDirection) -> Bool {
         case .horizontal:
             gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+            
+        case .diagonalUp:
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
+            
+        case .diagonalDown:
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 1.0)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
+            
         case .position(let position):
             gradientLayer.startPoint = position.startPoint
             gradientLayer.endPoint = position.endPoint
@@ -200,6 +212,16 @@ public func == (lhs: LHGradientDirection, rhs: LHGradientDirection) -> Bool {
             }
             self.colors = mColors
         }
+    }
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.backgroundColor = UIColor.white
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
 }
 
@@ -377,6 +399,16 @@ open class LHRoundCornerView: UIView {
         didSet {
             updateBorderCorners()
         }
+    }
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.backgroundColor = UIColor.white
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
 }
 

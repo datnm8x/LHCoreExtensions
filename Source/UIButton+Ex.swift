@@ -36,8 +36,6 @@ open class LHButtonHandler: UIButton {
     open var direction: LHGradientDirection = .vertical { didSet { updateGradient() } }
     open var colors: [UIColor]? { didSet { updateGradient() } }
     open var locations: [Float]? { didSet { updateGradient() } }
-    //    open var endPoint: CGPoint = CGPoint(x: 0.5, y: 1) { didSet { updateGradient() } }
-    //    open var startPoint: CGPoint = CGPoint(x: 0.5, y: 0) { didSet { updateGradient() } }
     open var gradientType: CAGradientLayerType = .linear { didSet { updateGradient() } }
     
     open func updateGradient() {
@@ -57,6 +55,15 @@ open class LHButtonHandler: UIButton {
         case .horizontal:
             gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
+            
+        case .diagonalUp:
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
+            
+        case .diagonalDown:
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 1.0)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
+            
         case .position(let position):
             gradientLayer.startPoint = position.startPoint
             gradientLayer.endPoint = position.endPoint
