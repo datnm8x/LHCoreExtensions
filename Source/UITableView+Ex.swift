@@ -218,6 +218,18 @@ open class LHBaseTableView: UITableView {
             CATransaction.commit()
         }
     }
+    
+    public override init(frame: CGRect, style: UITableView.Style) {
+        super.init(frame: frame, style: style)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+    }
 }
 
 public extension UICollectionView {
@@ -279,6 +291,18 @@ open class LHBaseCollectionView: UICollectionView {
         super.touchesBegan(touches, with: event)
         self.onTouchBeganEvent?()
     }
+    
+    public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(frame: frame, collectionViewLayout: layout)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+    }
 }
 
 public extension UICollectionViewCell {
@@ -306,6 +330,18 @@ open class LHBaseScrollView: UIScrollView {
         super.touchesBegan(touches, with: event)
         
         self.onTouchBeganEvent?()
+    }
+    
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
     }
 }
 

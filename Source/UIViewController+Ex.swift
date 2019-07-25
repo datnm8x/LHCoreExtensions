@@ -197,6 +197,10 @@ open class LHBaseViewController: UIViewController {
     fileprivate var isViewWillAppearAtFirst: Bool = true
     fileprivate var isViewDidAppearAtFirst: Bool = true
     
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+    }
+    
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -219,6 +223,10 @@ open class LHBaseTableViewController: UITableViewController {
     fileprivate var isViewWillAppearAtFirst: Bool = true
     fileprivate var isViewDidAppearAtFirst: Bool = true
     
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+    }
+    
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -240,6 +248,10 @@ open class LHBaseTableViewController: UITableViewController {
 open class LHBaseCollectionViewController: UICollectionViewController {
     fileprivate var isViewWillAppearAtFirst: Bool = true
     fileprivate var isViewDidAppearAtFirst: Bool = true
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+    }
     
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

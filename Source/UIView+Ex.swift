@@ -218,10 +218,19 @@ public func == (lhs: LHGradientDirection, rhs: LHGradientDirection) -> Bool {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor.white
+        self.updateGradient()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        
+        self.updateGradient()
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        
+        self.updateGradient()
     }
 }
 
@@ -405,10 +414,19 @@ open class LHRoundCornerView: UIView {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor.white
+        updateBorderCorners()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        
+        updateBorderCorners()
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        
+        updateBorderCorners()
     }
 }
 
@@ -426,6 +444,13 @@ open class LHRoundShadowView: UIView {
         super.init(coder: aDecoder)
         
         commonLayoutViews()
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        
+        commonLayoutViews()
+        setNeedsDisplay()
     }
     
     // MARK: - Init View

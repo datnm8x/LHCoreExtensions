@@ -206,11 +206,15 @@ open class LHBaseTextField: UITextField {
         self.commonInit()
     }
     
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        
+        commonInit()
+    }
+    
     private func commonInit() {
+        NotificationCenter.default.removeObserver(self)
         NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChangeText(_:)), name: UITextField.textDidChangeNotification, object: self)
-        if self.borderStyle != .roundedRect {
-            textContainInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 5)
-        }
     }
     
     deinit {

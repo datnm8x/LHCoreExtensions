@@ -97,6 +97,8 @@ open class LHBaseTextView: UITextView {
     var placeholderLabelConstraints = [NSLayoutConstraint]()
     
     fileprivate func commonInit() {
+        guard placeholderLabel.superview != self else { return }
+        
         let cFont = self.font ?? UIFont.systemFont(ofSize: 14.0)
         self.font = cFont
         
@@ -144,6 +146,12 @@ open class LHBaseTextView: UITextView {
     
     public convenience init(frame: CGRect) {
         self.init(frame: frame, textContainer: nil)
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        
+        commonInit()
     }
     
     deinit {

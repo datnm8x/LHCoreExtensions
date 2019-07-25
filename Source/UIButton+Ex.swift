@@ -20,6 +20,18 @@ open class LHButtonHandler: UIButton {
             self.addTarget(self, action: #selector(didClickedAction), for: .touchUpInside)
         }
     }
+    
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+    }
 }
 
 @IBDesignable open class LHGradientButton: LHButtonHandler {
@@ -106,5 +118,23 @@ open class LHButtonHandler: UIButton {
             }
             self.colors = mColors
         }
+    }
+    
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        updateGradient()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        updateGradient()
+    }
+    
+    open override func prepareForInterfaceBuilder() {
+        super.prepareForInterfaceBuilder()
+        
+        updateGradient()
     }
 }
