@@ -34,6 +34,11 @@ public extension UIDevice {
             return layoutMargins
         }
     }
+    static var safeAreaInsetsOffsetStatusBar: UIEdgeInsets {
+        var layoutInsets = self.safeAreaInsets
+        if !UIApplication.shared.isStatusBarHidden, layoutInsets.top == 0 { layoutInsets.top = 20 }
+        return layoutInsets
+    }
 }
 
 public extension UIScreen {
