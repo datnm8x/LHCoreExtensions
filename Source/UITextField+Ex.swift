@@ -141,6 +141,9 @@ public struct ActionEvents: OptionSet {
 @IBDesignable
 open class LHBaseTextField: UITextField {
     open var disableActionEvents: ActionEvents = .none
+    lazy var labelRight: UILabel = {
+        return UILabel()
+    }()
     
     @IBInspectable open var textContainInset: UIEdgeInsets = UIEdgeInsets.zero {
         didSet {
@@ -260,21 +263,25 @@ open class LHBaseTextField: UITextField {
     }
     private var paddingRightView: CGFloat = 0
     
+    open var rightStringColor: UIColor = UIColor.lightGray {
+        didSet { labelRight.textColor = rightStringColor }
+    }
+    
     open var rightString: String? {
         didSet {
             if let rightValue = rightString, !rightValue.isEmpty {
-                let label = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: self.height))
-                label.text = rightValue
-                label.textColor = UIColor.lightGray
-                label.font = self.font
-                label.textAlignment = .left
-                label.sizeToFit()
-                var labelFrame = label.frame
+                labelRight.frame = CGRect(x: 0, y: 0, width: 50, height: self.height)
+                labelRight.text = rightValue
+                labelRight.textColor = rightStringColor
+                labelRight.font = self.font
+                labelRight.textAlignment = .left
+                labelRight.sizeToFit()
+                var labelFrame = labelRight.frame
                 labelFrame.size.height = self.height - 8
                 labelFrame.size.width = labelFrame.width + 4
-                label.frame = labelFrame
-                self.paddingRightView = label.width
-                self.rightView = label
+                labelRight.frame = labelFrame
+                self.paddingRightView = labelRight.width
+                self.rightView = labelRight
                 self.rightViewMode = .always
             } else {
                 self.rightView = nil
