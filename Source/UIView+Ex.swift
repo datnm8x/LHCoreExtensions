@@ -437,6 +437,7 @@ open class LHRoundShadowView: UIView {
     override public init(frame: CGRect) {
         super.init(frame: frame)
         
+        containerView.backgroundColor = UIColor.white
         commonLayoutViews()
     }
     
@@ -461,7 +462,6 @@ open class LHRoundShadowView: UIView {
         clipsToBounds = false
         
         // set the cornerRadius of the containerView's layer
-        containerView.backgroundColor = UIColor.white
         containerView.clipsToBounds = true
         insertSubview(containerView, at: 0)
         

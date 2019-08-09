@@ -144,12 +144,6 @@ public extension String {
         return []
     }
     
-    var isValidEmail: Bool {
-        let emailRegex = "[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"
-        let emailCheck = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        return emailCheck.evaluate(with: self)
-    }
-    
     func addSpaces(_ forMaxLenght: Int) -> String {
         if self.length >= forMaxLenght { return self }
         var result = self
@@ -175,6 +169,26 @@ public extension String {
             } catch { /* error handling here */ }
         }
         return false
+    }
+    
+    var isValidEmail: Bool {
+        let emailRegex = "[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"
+        let emailCheck = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailCheck.evaluate(with: self)
+    }
+    
+    var isValidPhone: Bool {
+        do {
+            let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
+            let matches = detector.matches(in: self, options: [], range: NSMakeRange(0, self.count))
+            if let res = matches.first {
+                return res.resultType == .phoneNumber && res.range.location == 0 && res.range.length == self.count
+            } else {
+                return false
+            }
+        } catch {
+            return false
+        }
     }
     
     var isValidUrl: Bool {
@@ -245,5 +259,16 @@ public extension NSMutableAttributedString {
                 // not proccess
             }
         })
+    }
+    
+    func append(_ string: String, attributes: [NSAttributedString.Key : Any]? = nil) {
+        self.append(NSAttributedString(string: string, attributes: attributes))
+    }
+    
+    func appendString(_ string: String, font: UIFont? = nil, textColor: UIColor? = nil) {
+        var attributes = [NSAttributedString.Key : Any]()
+        if let font = font { attributes[NSAttributedString.Key.font] = font }
+        if let textColor = textColor { attributes[NSAttributedString.Key.foregroundColor] = textColor }
+        self.append(NSAttributedString(string: string, attributes: attributes))
     }
 }

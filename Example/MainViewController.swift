@@ -21,6 +21,14 @@ class MainViewController: LHBaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        print("".isValidPhone)
+        print("098".isValidPhone)
+        print("098 6345789".isValidPhone)
+        print("+8498 6345789".isValidPhone)
+        print("+8498 6345789a".isValidPhone)
+        print("-8498 6345789".isValidPhone)
+        print("098 6345".isValidPhone)
+        
         btnHandler.onClickedHandler = { [weak self] _ in
             guard let pushVC = PushViewController1.instanceStoryboard(UIStoryboard(name: "Main", bundle: nil)) else { return }
             self?.navigationController?.pushViewController(pushVC, animated: true)

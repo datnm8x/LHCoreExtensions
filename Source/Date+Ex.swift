@@ -147,6 +147,26 @@ public extension Date {
         let minuteInterval = Int(date.minute / minuteInterval) * minuteInterval
         self.minute = minuteInterval
     }
+    
+    func addingMinutes(_ mins: Int) -> Date {
+        return self.addingTimeInterval(TimeInterval(mins * 60))
+    }
+    
+    func addingHours(_ hours: Int) -> Date {
+        return self.addingTimeInterval(TimeInterval(hours * 60 * 60))
+    }
+    
+    mutating func addMinutes(_ mins: Int) {
+        self = self.addingTimeInterval(TimeInterval(mins * 60))
+    }
+    
+    mutating func addHours(_ hours: Int) {
+        self = self.addingTimeInterval(TimeInterval(hours * 60 * 60))
+    }
+    
+    mutating func addDays(_ days: Int) {
+        self = self.addingTimeInterval(TimeInterval(days * 24 * 60 * 60))
+    }
 }
 
 public extension TimeZone {
