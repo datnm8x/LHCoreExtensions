@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import LHCoreExtensions
 
 class MainViewController: LHBaseViewController {
     @IBOutlet weak var testCustomV: CustomViewTest!
