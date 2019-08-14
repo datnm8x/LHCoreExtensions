@@ -29,6 +29,12 @@ class MainViewController: LHBaseViewController {
         print("-8498 6345789".isValidPhone)
         print("098 6345".isValidPhone)
         
+        var date = Date()
+        date.year = 2017
+        date.month = 2
+        date.day = 31
+        print(date)
+        
         btnHandler.onClickedHandler = { [weak self] _ in
             guard let pushVC = PushViewController1.instanceStoryboard(UIStoryboard(name: "Main", bundle: nil)) else { return }
             self?.navigationController?.pushViewController(pushVC, animated: true)

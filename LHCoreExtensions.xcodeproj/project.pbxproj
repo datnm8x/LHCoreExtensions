@@ -26,7 +26,6 @@
 		083BD896227FE40F000C215D /* Collection+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD887227FE40E000C215D /* Collection+Ex.swift */; };
 		083BD897227FE40F000C215D /* UIDevice+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD888227FE40E000C215D /* UIDevice+Ex.swift */; };
 		083BD898227FE40F000C215D /* UIApplication+Responder+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD889227FE40E000C215D /* UIApplication+Responder+Ex.swift */; };
-		083BD899227FE40F000C215D /* UIButton+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD88A227FE40E000C215D /* UIButton+Ex.swift */; };
 		083BD89A227FE40F000C215D /* Number+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD88B227FE40E000C215D /* Number+Ex.swift */; };
 		083BD89B227FE40F000C215D /* Date+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD88C227FE40E000C215D /* Date+Ex.swift */; };
 		083BD89C227FE40F000C215D /* UIViewController+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083BD88D227FE40E000C215D /* UIViewController+Ex.swift */; };
@@ -54,6 +53,8 @@
 		085502E02282874B0009A753 /* LHCoreExtensions_UTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085502DF2282874B0009A753 /* LHCoreExtensions_UTests.swift */; };
 		087926892294E4F8004CDEF3 /* PushViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087926882294E4F8004CDEF3 /* PushViewController.swift */; };
 		08A03FD922FBAF05008A3D37 /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A03FD822FBAF05008A3D37 /* UIImage+Gif.swift */; };
+		08A9C7EF2303E77800A0E25A /* LHEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A9C7ED2303E77700A0E25A /* LHEffectView.swift */; };
+		08A9C7F02303E77800A0E25A /* LHEffectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A9C7EE2303E77700A0E25A /* LHEffectButton.swift */; };
 		08C0FF16227FEEEF0078F5AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C0FF15227FEEEF0078F5AE /* AppDelegate.swift */; };
 		08C0FF2A227FEF230078F5AE /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C0FF26227FEF230078F5AE /* MainViewController.swift */; };
 		08C0FF38227FEF6B0078F5AE /* CustomViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C0FF2E227FEF6B0078F5AE /* CustomViewTest.swift */; };
@@ -92,7 +93,6 @@
 		083BD887227FE40E000C215D /* Collection+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Ex.swift"; sourceTree = "<group>"; };
 		083BD888227FE40E000C215D /* UIDevice+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Ex.swift"; sourceTree = "<group>"; };
 		083BD889227FE40E000C215D /* UIApplication+Responder+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Responder+Ex.swift"; sourceTree = "<group>"; };
-		083BD88A227FE40E000C215D /* UIButton+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Ex.swift"; sourceTree = "<group>"; };
 		083BD88B227FE40E000C215D /* Number+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Number+Ex.swift"; sourceTree = "<group>"; };
 		083BD88C227FE40E000C215D /* Date+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Ex.swift"; sourceTree = "<group>"; };
 		083BD88D227FE40E000C215D /* UIViewController+Ex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ex.swift"; sourceTree = "<group>"; };
@@ -120,6 +120,8 @@
 		085502DF2282874B0009A753 /* LHCoreExtensions_UTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LHCoreExtensions_UTests.swift; sourceTree = "<group>"; };
 		087926882294E4F8004CDEF3 /* PushViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushViewController.swift; sourceTree = "<group>"; };
 		08A03FD822FBAF05008A3D37 /* UIImage+Gif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
+		08A9C7ED2303E77700A0E25A /* LHEffectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LHEffectView.swift; sourceTree = "<group>"; };
+		08A9C7EE2303E77700A0E25A /* LHEffectButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LHEffectButton.swift; sourceTree = "<group>"; };
 		08C0FF13227FEEEF0078F5AE /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08C0FF15227FEEEF0078F5AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08C0FF26227FEF230078F5AE /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -291,7 +293,6 @@
 				083BD88B227FE40E000C215D /* Number+Ex.swift */,
 				083BD891227FE40F000C215D /* String+Ex.swift */,
 				083BD889227FE40E000C215D /* UIApplication+Responder+Ex.swift */,
-				083BD88A227FE40E000C215D /* UIButton+Ex.swift */,
 				083BD886227FE40E000C215D /* UIColor+Ex.swift */,
 				083BD888227FE40E000C215D /* UIDevice+Ex.swift */,
 				083BD88E227FE40E000C215D /* UIImage+Ex.swift */,
@@ -300,6 +301,8 @@
 				083BD88F227FE40E000C215D /* UITextField+Ex.swift */,
 				083BD892227FE40F000C215D /* UITextView+Ex.swift */,
 				083BD893227FE40F000C215D /* UIView+Ex.swift */,
+				08A9C7EE2303E77700A0E25A /* LHEffectButton.swift */,
+				08A9C7ED2303E77700A0E25A /* LHEffectView.swift */,
 				083BD88D227FE40E000C215D /* UIViewController+Ex.swift */,
 				083BD890227FE40E000C215D /* UtilsEx.swift */,
 				0819BFD5228BC70A007639BB /* UINavigationController+Ex.swift */,
@@ -645,8 +648,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				08A03FD922FBAF05008A3D37 /* UIImage+Gif.swift in Sources */,
+				08A9C7EF2303E77800A0E25A /* LHEffectView.swift in Sources */,
 				083BD89E227FE40F000C215D /* UITextField+Ex.swift in Sources */,
-				083BD899227FE40F000C215D /* UIButton+Ex.swift in Sources */,
 				083BD89C227FE40F000C215D /* UIViewController+Ex.swift in Sources */,
 				083BD89F227FE40F000C215D /* UtilsEx.swift in Sources */,
 				083BD89A227FE40F000C215D /* Number+Ex.swift in Sources */,
@@ -662,6 +665,7 @@
 				0819BFD6228BC70A007639BB /* UINavigationController+Ex.swift in Sources */,
 				083BD895227FE40F000C215D /* UIColor+Ex.swift in Sources */,
 				083BD8A2227FE40F000C215D /* UIView+Ex.swift in Sources */,
+				08A9C7F02303E77800A0E25A /* LHEffectButton.swift in Sources */,
 				085502D722827B5D0009A753 /* KeyboardHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

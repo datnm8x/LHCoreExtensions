@@ -74,9 +74,8 @@ public extension Date {
             return Calendar.current.dateComponents(Set<Calendar.Component>([.year]), from: self).year ?? 0
         }
         set {
-            var dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: self)
-            dateComponents.year = newValue
-            guard let newDate = Calendar.current.date(from: dateComponents) else {
+            let offsetValue = newValue - self.year
+            guard let newDate = Calendar.current.date(byAdding: Calendar.Component.year, value: offsetValue, to: self) else {
                 return
             }
             self = newDate

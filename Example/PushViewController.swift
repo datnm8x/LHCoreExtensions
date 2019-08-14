@@ -32,8 +32,8 @@ class PushViewController: LHBaseViewController {
 }
 
 class PushViewController1: PushViewController {
-    @IBOutlet weak var testCornerView: LHRoundShadowView!
-    @IBOutlet weak var testGradientView: LHGradientView!
+    @IBOutlet weak var testCornerView: LHEffectView!
+    @IBOutlet weak var testGradientView: LHEffectView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
