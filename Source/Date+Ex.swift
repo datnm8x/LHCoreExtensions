@@ -18,9 +18,10 @@ public extension Date {
         return dateFormatter.string(from: self)
     }
     
-    func toString(format dateFormat: String, timeZone: TimeZone? = nil) -> String {
+    func toString(format dateFormat: String, locale: Locale = Locale(identifier: "en_US"), timeZone: TimeZone? = nil) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = dateFormat
+        dateFormatter.locale = locale
         if timeZone != nil { dateFormatter.timeZone = timeZone }
         return dateFormatter.string(from: self)
     }
@@ -135,10 +136,6 @@ public extension Date {
         return self.isEqualDateIgnoreTime(toDate: Date())
     }
     
-    func addingDays(_ days: Int) -> Date {
-        return self.addingTimeInterval(TimeInterval(days * 24 * 60 * 60))
-    }
-    
     // interval must be evenly divided into 60. default is 0. min is 0, max is 30
     init(minuteInterval: Int, since date: Date = Date()) {
         self = date
@@ -153,6 +150,10 @@ public extension Date {
     
     func addingHours(_ hours: Int) -> Date {
         return self.addingTimeInterval(TimeInterval(hours * 60 * 60))
+    }
+    
+    func addingDays(_ days: Int) -> Date {
+        return self.addingTimeInterval(TimeInterval(days * 24 * 60 * 60))
     }
     
     mutating func addMinutes(_ mins: Int) {

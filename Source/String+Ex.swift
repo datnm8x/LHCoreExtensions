@@ -221,7 +221,7 @@ public extension String {
 }
 
 public extension NSMutableAttributedString {
-    func addFont(font: UIFont, for subString: String?) {
+    func setFont(_ font: UIFont, for subString: String?) {
         guard let forSubString = subString, String.isEmpty(forSubString) == false else { return }
         let rangeOfSub = self.string.nsString.range(of: forSubString)
         if rangeOfSub.location != NSNotFound {
@@ -231,7 +231,7 @@ public extension NSMutableAttributedString {
         }
     }
     
-    func addTextColor(color: UIColor, for subString: String?) {
+    func setTextColor(_ color: UIColor, for subString: String?) {
         guard let forSubString = subString, String.isEmpty(forSubString) == false else { return }
         let rangeOfSub = self.string.nsString.range(of: forSubString)
         if rangeOfSub.location != NSNotFound {
@@ -241,7 +241,7 @@ public extension NSMutableAttributedString {
         }
     }
     
-    func addFont(font: UIFont, forSubs subString: String?) {
+    func setFont(_ font: UIFont, forSubs subString: String?) {
         self.string.getRanges(of: subString)?.forEach({ (range) in
             if range.location != NSNotFound {
                 self.addAttributes([NSAttributedString.Key.font: font], range: range)
@@ -251,7 +251,7 @@ public extension NSMutableAttributedString {
         })
     }
     
-    func addTextColor(color: UIColor, forSubs subString: String?) {
+    func setTextColor(_ color: UIColor, forSubs subString: String?) {
         self.string.getRanges(of: subString)?.forEach({ (range) in
             if range.location != NSNotFound {
                 self.addAttributes([NSAttributedString.Key.foregroundColor: color], range: range)
@@ -265,10 +265,10 @@ public extension NSMutableAttributedString {
         self.append(NSAttributedString(string: string, attributes: attributes))
     }
     
-    func appendString(_ string: String, font: UIFont? = nil, textColor: UIColor? = nil) {
+    func append(_ string: String, font: UIFont, textColor: UIColor? = nil) {
         var attributes = [NSAttributedString.Key : Any]()
-        if let font = font { attributes[NSAttributedString.Key.font] = font }
-        if let textColor = textColor { attributes[NSAttributedString.Key.foregroundColor] = textColor }
+        attributes[.font] = font
+        if let textColor = textColor { attributes[.foregroundColor] = textColor }
         self.append(NSAttributedString(string: string, attributes: attributes))
     }
 }

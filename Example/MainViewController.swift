@@ -53,6 +53,9 @@ class MainViewController: LHBaseViewController {
         testTableViewEx()
         testCollectionViewEx()
         testUIViewControllerEx()
+        
+        let arrs = ["Hanoi", "Bac Ninh Province", "Hanoi", "bắc giang", "Hanoi"]
+        print(arrs.unique)
     }
     
     override func viewWillAppear(_ animated: Bool) {

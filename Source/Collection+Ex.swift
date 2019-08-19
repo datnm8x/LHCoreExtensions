@@ -8,6 +8,16 @@
 
 import Foundation
 
+public extension Array where Element: Hashable {
+    // same as Distinct()
+    // arrs = ["four","one", "two", "one", "three","four", "four"]
+    // arrs.unique => ["four", "one", "two", "three"]
+    var unique: [Element] {
+        var alreadyAdded = Set<Iterator.Element>()
+        return self.filter { alreadyAdded.insert($0).inserted }
+    }
+}
+
 public extension Array where Element: Equatable {
     // Remove first collection element that is equal to the given `object`:
     @discardableResult
@@ -35,5 +45,13 @@ public extension Array where Element: Equatable {
     mutating func removeLastSafe() -> Element? {
         guard self.count > 0 else { return nil }
         return self.removeLast()
+    }
+}
+
+public extension Array where Element: StringProtocol {
+    var filterEmpty: [Element] {
+        return self.filter({ (item) -> Bool in
+            return !item.isEmpty
+        })
     }
 }
