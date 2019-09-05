@@ -167,6 +167,15 @@ public extension Date {
     mutating func addDays(_ days: Int) {
         self = self.addingTimeInterval(TimeInterval(days * 24 * 60 * 60))
     }
+    
+    func daysIgnoreTimeSince(_ date: Date) -> Int {
+        var calComponents = Calendar.current.dateComponents(in: TimeZone.current, from: date)
+        calComponents.day = self.day
+        calComponents.month = self.month
+        calComponents.year = self.year
+        let calDate = Calendar.current.date(from: calComponents) ?? self
+        return Calendar.current.dateComponents([Calendar.Component.day], from: date, to: calDate).day ?? 0
+    }
 }
 
 public extension TimeZone {
