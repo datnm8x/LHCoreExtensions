@@ -26,37 +26,45 @@ public extension UIView {
         get { return self.frame.size.height }
         set { self.frame.size.height = newValue }
     }
-    
+    var centerSelf: CGPoint { return CGPoint(x: width / 2.0, y: height / 2.0) }
+
     class var nibNameClass: String? {
         return "\(self)".components(separatedBy: ".").first
     }
-    
+
     class var nib: UINib? {
         if Bundle.main.path(forResource: nibNameClass, ofType: "nib") != nil {
             return UINib(nibName: nibNameClass ?? "", bundle: nil)
         }
         return nil
     }
-    
-    class func fromNib(nibNameOrNil: String? = nil) -> Self? {
-        return fromNib(nibNameOrNil: nibNameOrNil, type: self)
+
+    class func nib(bundle: Bundle = Bundle.main) -> UINib? {
+        if bundle.path(forResource: nibNameClass, ofType: "nib") != nil {
+            return UINib(nibName: nibNameClass ?? "", bundle: nil)
+        }
+        return nil
     }
-    
-    class func fromNib<T: UIView>(nibNameOrNil: String? = nil, type: T.Type) -> T? {
+
+    class func fromNib(nibNameOrNil: String? = nil, inBundle: Bundle = Bundle.main) -> Self? {
+        return fromNib(nibNameOrNil: nibNameOrNil, type: self, inBundle: inBundle)
+    }
+
+    class func fromNib<T: UIView>(nibNameOrNil: String? = nil, type: T.Type, inBundle: Bundle = Bundle.main) -> T? {
         let nibName = (nibNameOrNil ?? nibNameClass) ?? ""
-        guard Bundle.main.path(forResource: nibName, ofType: "nib") != nil else {
+        guard inBundle.path(forResource: nibName, ofType: "nib") != nil else {
             return nil
         }
-        
-        if let nibViews = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil), nibViews.count > 0 {
+
+        if let nibViews = inBundle.loadNibNamed(nibName, owner: nil, options: nil), nibViews.count > 0 {
             for view in nibViews where view is T {
                 return view as? T
             }
         }
-        
+
         return nil
     }
-    
+
     var parentViewController: UIViewController? {
         var parentResponder: UIResponder? = self
         while parentResponder != nil {
@@ -67,7 +75,7 @@ public extension UIView {
         }
         return nil
     }
-    
+
     func captured(withScale: CGFloat = 0.0) -> UIImage? {
         var capturedImage: UIImage?
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, withScale)
@@ -75,11 +83,11 @@ public extension UIView {
             self.layer.render(in: currentContext)
             capturedImage = UIGraphicsGetImageFromCurrentImageContext()
         }
-        
+
         UIGraphicsEndImageContext()
         return capturedImage
     }
-    
+
     func rotate(degree: CGFloat = 0, duration: TimeInterval = 0) {
         DispatchQueue.mainAsync { [weak self] in
             UIView.animate(withDuration: duration) {
@@ -100,7 +108,7 @@ extension UIView {
             setNeedsLayout()
         }
     }
-    
+
     @IBInspectable
     open var borderWidth: CGFloat {
         get { return layer.borderWidth }
@@ -110,7 +118,7 @@ extension UIView {
             setNeedsLayout()
         }
     }
-    
+
     @IBInspectable
     open var borderColor: UIColor? {
         get { return layer.borderColor == nil ? nil : UIColor(cgColor: layer.borderColor!) }
@@ -120,7 +128,7 @@ extension UIView {
             setNeedsLayout()
         }
     }
-    
+
     @objc public func setCornerRadius(_ radius: CGFloat, width: CGFloat = 0, color: UIColor? = nil) {
         layer.cornerRadius = radius
         layer.borderWidth = width
@@ -129,7 +137,16 @@ extension UIView {
             clipsToBounds = true
         }
     }
-    
+
+    @available(iOS 11, *)
+    @objc public func setCornersMasked(corners: UIRectCorner, radius: CGFloat, borderWidth: CGFloat = 0, color: UIColor? = nil) {
+        layer.cornerRadius = radius
+        layer.borderWidth = borderWidth
+        layer.borderColor = color?.cgColor
+        layer.maskedCorners = corners.caCornerMask
+        if radius > 0 { clipsToBounds = true }
+    }
+
     @objc public func applySketchShadow(color: UIColor = .black, opacity: Float = 1.0,
                                   x: CGFloat = 0, y: CGFloat = -3, blur: CGFloat = 6, spread: CGFloat = 0)
     {
@@ -158,5 +175,32 @@ extension CALayer {
             shadowPath = UIBezierPath(rect: rect).cgPath
         }
         masksToBounds = false
+    }
+}
+
+extension UIRectCorner {
+    var caCornerMask: CACornerMask {
+        guard !self.contains(.allCorners) else { return [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner] }
+
+        var caMask: CACornerMask = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner]
+        if !self.contains(.bottomLeft) { caMask.remove(.layerMinXMaxYCorner) }
+        if !self.contains(.bottomRight) { caMask.remove(.layerMaxXMaxYCorner) }
+        if !self.contains(.topLeft) { caMask.remove(.layerMinXMinYCorner) }
+        if !self.contains(.topRight) { caMask.remove(.layerMaxXMinYCorner) }
+
+        return caMask
+    }
+}
+
+extension CACornerMask {
+    var rectCorner: UIRectCorner {
+        if self.contains([.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner]) { return .allCorners }
+
+        var corner: UIRectCorner = [.bottomLeft, .bottomRight, .topLeft, .topRight]
+        if !self.contains(.layerMinXMaxYCorner) { corner.remove(.bottomLeft) }
+        if !self.contains(.layerMaxXMaxYCorner) { corner.remove(.bottomRight) }
+        if !self.contains(.layerMinXMinYCorner) { corner.remove(.topLeft) }
+        if !self.contains(.layerMaxXMinYCorner) { corner.remove(.topRight) }
+        return corner
     }
 }

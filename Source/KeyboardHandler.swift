@@ -16,7 +16,7 @@ open class LHKeyboardHandler {
     public static let shared: LHKeyboardHandler = LHKeyboardHandler()
     /// The delegate for keyboard notifications.
     open var callback: LHKeyboardHandlerCallback?
-    
+
     /// Creates a new instance of `KeyboardHandler` and adds itself as observer for `UIKeyboard` notifications.
     public init() {
         let center = NotificationCenter.default
@@ -27,36 +27,36 @@ open class LHKeyboardHandler {
         center.addObserver(self, selector: #selector(keyboardWillHideNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
         center.addObserver(self, selector: #selector(keyboardDidHideNotification), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     @objc private func keyboardWillShowNotification(_ notification: Notification) {
         let info = LHKeyboardInfo(info: notification.userInfo, state: .willShow)
         callback?(self, info)
     }
-    
+
     @objc private func keyboardDidShowNotification(_ notification: Notification) {
         let info = LHKeyboardInfo(info: notification.userInfo, state: .visible)
         callback?(self, info)
     }
-    
+
     @objc private func keyboardWillChangeNotification(_ notification: Notification) {
         let info = LHKeyboardInfo(info: notification.userInfo, state: .willChangeFrame)
         callback?(self, info)
     }
-    
+
     @objc private func keyboardDidChangedNotification(_ notification: Notification) {
         let info = LHKeyboardInfo(info: notification.userInfo, state: .didChangedFrame)
         callback?(self, info)
     }
-    
+
     @objc private func keyboardWillHideNotification(_ notification: Notification) {
         let info = LHKeyboardInfo(info: notification.userInfo, state: .willHide)
         callback?(self, info)
     }
-    
+
     @objc private func keyboardDidHideNotification(_ notification: Notification) {
         let info = LHKeyboardInfo(info: notification.userInfo, state: .hidden)
         callback?(self, info)
@@ -65,22 +65,22 @@ open class LHKeyboardHandler {
 
 /// Represents the keyboard state.
 public enum LHKeyboardState {
-    
+
     /// Denotes hidden state of the keyboard.
     /// Corresponds to `UIKeyboardDidHideNotification`.
     case hidden
-    
+
     /// Denotes state when the keyboard about to show.
     /// Corresponds to `UIKeyboardWillShowNotification`.
     case willShow
-    
+
     case willChangeFrame
     case didChangedFrame
-    
+
     /// Denotes visible state of the keyboard.
     /// Corresponds to `UIKeyboardDidShowNotification`.
     case visible
-    
+
     /// Denotes state when the keyboard about to hide.
     /// Corresponds to `UIKeyboardWillHideNotification`.
     case willHide
@@ -88,29 +88,29 @@ public enum LHKeyboardState {
 
 /// Represents info about keyboard extracted from `NSNotification`.
 public struct LHKeyboardInfo {
-    
+
     /// The state of the keyboard.
     public let state: LHKeyboardState
-    
+
     /// The start frame of the keyboard in screen coordinates.
     /// Corresponds to `UIKeyboardFrameBeginUserInfoKey`.
     public let beginFrame: CGRect
-    
+
     /// The end frame of the keyboard in screen coordinates.
     /// Corresponds to `UIKeyboardFrameEndUserInfoKey`.
     public let endFrame: CGRect
-    
+
     public let visibleHeight: CGFloat
     public let isHidden: Bool
-    
+
     /// Defines how the keyboard will be animated onto or off the screen.
     /// Corresponds to `UIKeyboardAnimationCurveUserInfoKey`.
     public let animationCurve: UIView.AnimationCurve
-    
+
     /// The duration of the animation in seconds.
     /// Corresponds to `UIKeyboardAnimationDurationUserInfoKey`.
     public let animationDuration: TimeInterval
-    
+
     /// Options for animating constructed from `animationCurve` property.
     public var animationOptions: UIView.AnimationOptions {
         switch animationCurve {
@@ -135,7 +135,7 @@ public extension LHKeyboardInfo {
         let kVisibleHeight = UIScreen.main.bounds.height - kEndFrame.origin.y
         self.visibleHeight = kVisibleHeight
         self.isHidden = state == .hidden || state == .willHide || kVisibleHeight <= 0.0
-        
+
         let animationCurveRaw = info?[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int ?? 0
         if animationCurveRaw == 7 {
             self.animationCurve = .easeInOut

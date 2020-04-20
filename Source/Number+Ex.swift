@@ -19,6 +19,8 @@ public extension Int {
         }
         return format.string(for: self) ?? String(self)
     }
+
+    var int64Value: Int64 { return Int64(self) }
 }
 
 public extension Int64 {
@@ -30,5 +32,13 @@ public extension Int64 {
             format.usesGroupingSeparator = true
         }
         return format.string(for: self) ?? String(self)
+    }
+
+    var intValue: Int { return Int(self) }
+}
+
+public extension UIEdgeInsets {
+    var inverted: UIEdgeInsets {
+        return UIEdgeInsets(top: -top, left: -left, bottom: -bottom, right: -right)
     }
 }

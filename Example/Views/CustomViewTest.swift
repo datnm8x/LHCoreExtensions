@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 class CustomViewTest: UIView {
-    
+
 }
 
 class CustomViewTestNil: UIView {
-    
+
 }

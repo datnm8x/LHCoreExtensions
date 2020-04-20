@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="CXu-Qc-2HE">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="CXu-Qc-2HE">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -54,11 +50,11 @@
                         <viewControllerLayoutGuide type="bottom" id="WuZ-2g-JUT"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="BWY-VR-yYM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TXV-ug-Rp1" customClass="LHBaseTextView" customModule="LHCoreExtensions">
-                                <rect key="frame" x="16" y="152" width="343" height="180"/>
+                                <rect key="frame" x="16" y="138" width="568" height="180"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="h7b-iB-LrC"/>
@@ -112,7 +108,7 @@
                         <viewControllerLayoutGuide type="bottom" id="k5N-ab-CpY"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bZW-TY-KZd">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -148,14 +144,14 @@
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1v7-yg-yIf" customClass="LHEffectView" customModule="LHCoreExtensions">
-                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="50" width="600" height="501"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9QV-Lj-JpC" customClass="LHBaseCollectionView" customModule="LHCoreExtensions">
-                                        <rect key="frame" x="0.0" y="295" width="375" height="259"/>
+                                        <rect key="frame" x="0.0" y="268.5" width="600" height="232.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="i6V-pR-vZI">
                                             <size key="itemSize" width="166" height="142"/>
@@ -196,15 +192,15 @@
                                         </connections>
                                     </collectionView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="50e-DB-EWo" customClass="LHBaseTableView" customModule="LHCoreExtensions">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="259"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="232.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="dataSource" destination="vXZ-lx-hvc" id="1YG-nl-sYJ"/>
                                             <outlet property="delegate" destination="vXZ-lx-hvc" id="n0u-9V-pRK"/>
                                         </connections>
                                     </tableView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ekj-QV-Cx8" customClass="LHButtonHandler" customModule="LHCoreExtensions">
-                                        <rect key="frame" x="164.5" y="259" width="46" height="36"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ekj-QV-Cx8" customClass="LHButton" customModule="LHCoreExtensions">
+                                        <rect key="frame" x="277" y="232.5" width="46" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="36" id="jTb-AA-R5o"/>
                                         </constraints>
@@ -255,11 +251,11 @@
                         <viewControllerLayoutGuide type="bottom" id="rFj-bC-6Eg"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bk6-yE-Hc6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pQE-rO-zBb" customClass="LHEffectView" customModule="LHCoreExtensions">
-                                <rect key="frame" x="107.5" y="253.5" width="160" height="160"/>
+                                <rect key="frame" x="220" y="220" width="160" height="160"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D8D-nY-cKb">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
@@ -351,7 +347,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dh1-eV-jof">
-                                <rect key="frame" x="44" y="40" width="287" height="128"/>
+                                <rect key="frame" x="44" y="20" width="512" height="128"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="YmN-5U-H0g"/>
@@ -396,7 +392,7 @@
                         <viewControllerLayoutGuide type="bottom" id="acc-58-FIA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jPr-RB-L6f">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -414,7 +410,7 @@
                         <viewControllerLayoutGuide type="bottom" id="i7v-vG-B84"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="eNX-gG-TwI">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -432,7 +428,7 @@
                         <viewControllerLayoutGuide type="bottom" id="kHP-Dh-S4w"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vSU-wF-RyX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -450,7 +446,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Opm-8k-eXc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="06c-sZ-aDH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -468,13 +464,12 @@
                         <viewControllerLayoutGuide type="bottom" id="o72-9v-b60"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gWd-Ps-cJh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Xin Chào" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M4u-7o-819" customClass="LHBaseTextField" customModule="LHCoreExtensions">
                                 <rect key="frame" x="49" y="276" width="273" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>

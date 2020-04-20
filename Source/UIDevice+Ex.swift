@@ -18,10 +18,16 @@ public extension UIDevice {
         }
         return false
     }
-    
+
     static var height: CGFloat { return UIScreen.height }
     static var width: CGFloat { return UIScreen.width }
-    
+    static var bounds: CGRect { return UIScreen.main.bounds }
+    static var center: CGPoint { return UIScreen.center }
+    static var size: CGSize { return UIScreen.size }
+
+    static var isIphone: Bool { return UIDevice.current.userInterfaceIdiom == .phone }
+    static var isIpad: Bool { return UIDevice.current.userInterfaceIdiom == .pad }
+
     static var safeAreaInsets: UIEdgeInsets {
         if #available(iOS 11.0, *) {
             return UIApplication.shared.windows.first?.safeAreaInsets ?? UIEdgeInsets.zero
@@ -39,9 +45,14 @@ public extension UIDevice {
         if !UIApplication.shared.isStatusBarHidden, layoutInsets.top == 0 { layoutInsets.top = 20 }
         return layoutInsets
     }
+
+    static var iOSVersion: String { return current.systemVersion }
+    static var osVersion: OperatingSystemVersion { return ProcessInfo().operatingSystemVersion }
 }
 
 public extension UIScreen {
-    static var height: CGFloat { return self.main.bounds.size.height }
-    static var width: CGFloat { return self.main.bounds.size.width }
+    static var height: CGFloat { return UIScreen.main.bounds.size.height }
+    static var width: CGFloat { return UIScreen.main.bounds.size.width }
+    static var center: CGPoint { return CGPoint(x: UIScreen.width / 2, y: UIScreen.height / 2) }
+    static var size: CGSize { return UIScreen.main.bounds.size }
 }

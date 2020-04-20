@@ -26,21 +26,21 @@ public extension Array where Element: Equatable {
             remove(at: index)
             return index
         }
-        
+
         return nil
     }
-    
+
     func indexOf(object: Element) -> Int? {
         guard (self as NSArray).contains(object) else { return nil }
         return (self as NSArray).index(of: object)
     }
-    
+
     @discardableResult
     mutating func removeFirstSafe() -> Element? {
         guard self.count > 0 else { return nil }
         return self.removeFirst()
     }
-    
+
     @discardableResult
     mutating func removeLastSafe() -> Element? {
         guard self.count > 0 else { return nil }

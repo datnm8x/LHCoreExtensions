@@ -20,11 +20,28 @@ public extension UIImage {
             self.draw(in: rect)
             context.setBlendMode(.sourceIn)
             context.fill(rect)
-            
+
             if let imgContext = UIGraphicsGetImageFromCurrentImageContext() { resultImage = imgContext }
         }
         UIGraphicsEndImageContext()
-        
+
         return resultImage
+    }
+
+    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+        let rect = CGRect(origin: .zero, size: size)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
+        color.setFill()
+        UIRectFill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        guard let cgImage = image?.cgImage else { return nil }
+        self.init(cgImage: cgImage)
+    }
+
+    convenience init?(named: String, ofType: String? = "png", inBundle: Bundle? = Bundle.main) {
+        guard let path = (inBundle ?? Bundle.main).path(forResource: named, ofType: ofType) else { return nil }
+        self.init(contentsOfFile: path)
     }
 }

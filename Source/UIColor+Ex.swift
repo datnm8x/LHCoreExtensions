@@ -20,7 +20,7 @@ public extension UIColor {
         let blue = CGFloat( rgb & 0x0000FF) / CGFloat(255)
         self.init(red: red, green: green, blue: blue, alpha: alph)
     }
-    
+
     func toImage(_ size: CGSize = CGSize(width: 8, height: 8)) -> UIImage? {
         if #available(iOS 10.0, *) {
             return UIGraphicsImageRenderer(size: size).image { (rendererContext) in

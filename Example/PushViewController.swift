@@ -13,16 +13,16 @@ import SnapKit
 
 class PushViewController: LHBaseViewController {
     weak var beforeVC: UIViewController?
-    var buttonAction: LHButtonHandler = LHButtonHandler(frame: CGRect(x: 20, y: 150, width: 300, height: 44))
-    
+    var buttonAction: LHButton = LHButton(frame: CGRect(x: 20, y: 150, width: 300, height: 44))
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.navigationItem.title = String(describing: self)
         buttonAction.setTitle("Push Action", for: UIControl.State.normal)
         buttonAction.setTitleColor(UIColor.brown, for: UIControl.State.normal)
         self.view.addSubview(buttonAction)
-        
+
         buttonAction.snp.makeConstraints { (constraint) in
             constraint.width.equalTo(280)
             constraint.height.equalTo(50)
@@ -34,24 +34,24 @@ class PushViewController: LHBaseViewController {
 class PushViewController1: PushViewController {
     @IBOutlet weak var testCornerView: LHEffectView!
     @IBOutlet weak var testGradientView: LHEffectView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        buttonAction.onClickedHandler = { [weak self] _ in
+
+        buttonAction.onClicked = { [weak self] _ in
             guard let pushVC = PushViewController2.instanceStoryboard(UIStoryboard(name: "Main", bundle: nil)) else { return }
             self?.navigationController?.pushViewController(pushVC, animated: true)
         }
-        
+
         testCornerView.backgroundColor = .lightGray
         testCornerView.cornersAt = UIRectCorner.topLeft.union(.topRight)
         testCornerView.cornerRadius = 15
     }
-    
+
     override func viewDidAppearAtFirst(_ atFirst: Bool, animated: Bool) {
         super.viewDidAppearAtFirst(atFirst, animated: animated)
         guard atFirst else { return }
-        
+
         testGradientView.direction = .position((startPoint: CGPoint(x: 0, y: 0), endPoint: CGPoint(x: 1, y: 1)))
     }
 }
@@ -60,8 +60,8 @@ class PushViewController1: PushViewController {
 class PushViewController2: PushViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        buttonAction.onClickedHandler = { [weak self] _ in
+
+        buttonAction.onClicked = { [weak self] _ in
             guard let pushVC = PushViewController3.instanceStoryboard(UIStoryboard(name: "Main", bundle: nil)) else { return }
             self?.navigationController?.pushViewController(pushVC, animated: true)
         }
@@ -71,10 +71,10 @@ class PushViewController2: PushViewController {
 class PushViewController3: PushViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        buttonAction.onClickedHandler = { [weak self] _ in
+
+        buttonAction.onClicked = { [weak self] _ in
             guard let pushVC = PushViewController4.instanceStoryboard(UIStoryboard(name: "Main", bundle: nil)) else { return }
-            
+
             pushVC.beforeVC = self
             self?.navigationController?.pushViewController(pushVC, animated: true)
         }
@@ -84,8 +84,8 @@ class PushViewController3: PushViewController {
 class PushViewController4: PushViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        buttonAction.onClickedHandler = { [weak self] _ in
+
+        buttonAction.onClicked = { [weak self] _ in
             guard let pushVC = PushViewController5.instanceStoryboard(UIStoryboard(name: "Main", bundle: nil)) else { return }
             pushVC.beforeVC = self?.beforeVC
             self?.navigationController?.pushViewController(pushVC, animated: true)
@@ -96,9 +96,9 @@ class PushViewController4: PushViewController {
 class PushViewController5: PushViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        buttonAction.onClickedHandler = { [weak self] _ in
-            
+
+        buttonAction.onClicked = { [weak self] _ in
+
             if let mBeforeVC = self?.beforeVC {
                 self?.navigationController?.pushToViewControllerBefore(mBeforeVC, animated: true, completion: {
                     print("pushToViewControllerBefore")
@@ -115,8 +115,8 @@ class PushViewController5: PushViewController {
 class PushViewController6: PushViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        buttonAction.onClickedHandler = { [weak self] _ in
+
+        buttonAction.onClicked = { [weak self] _ in
             self?.navigationController?.popToRootViewController(animated: true)
         }
     }
@@ -131,14 +131,14 @@ class TestCornerView: UIView {
             setNeedsDisplay()
         }
     }
-    
+
     func setCornerRadiusTest(cornerRadius: CGFloat, borderWidth: CGFloat = 0, borderColor: UIColor? = nil) {
         pCornerRadius = cornerRadius
         pBorderWidth = borderWidth
         pBorderColor = borderColor
         setNeedsDisplay()
     }
-    
+
     override func draw(_ rect: CGRect) {
         super.draw(rect)
 

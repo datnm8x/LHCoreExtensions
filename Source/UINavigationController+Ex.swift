@@ -11,14 +11,14 @@ import UIKit
 
 public extension UINavigationController {
     var rootViewController: UIViewController? { return self.viewControllers.first }
-    
+
     func pushViewController(_ viewController: UIViewController, animated: Bool, completion: @escaping () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         self.pushViewController(viewController, animated: animated)
         CATransaction.commit()
     }
-    
+
     @discardableResult
     func popViewController(animated: Bool, completion: @escaping () -> Void) -> UIViewController? {
         CATransaction.begin()
@@ -27,7 +27,7 @@ public extension UINavigationController {
         CATransaction.commit()
         return results
     }
-    
+
     @discardableResult
     func popToViewController(_ viewController: UIViewController, animated: Bool, completion: @escaping () -> Void) -> [UIViewController]? {
         CATransaction.begin()
@@ -36,7 +36,7 @@ public extension UINavigationController {
         CATransaction.commit()
         return results
     }
-    
+
     @discardableResult
     func popToRootViewController(animated: Bool, completion: @escaping () -> Void) -> [UIViewController]? {
         CATransaction.begin()
@@ -45,9 +45,9 @@ public extension UINavigationController {
         CATransaction.commit()
         return results
     }
-    
+
     // This function will be push viewController, and then remove all viewControllers in stack and only keep rootViewController of stack
-    func pushViewControllerAndRemoveBefores(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
+    func pushViewControllerAndRemoveAllBefore(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
         self.pushViewController(viewController, animated: animated) { [weak self] in
             guard let firstVC = self?.viewControllers.first, let lastVC = self?.viewControllers.last, firstVC != lastVC else {
                 completion?()
@@ -57,7 +57,7 @@ public extension UINavigationController {
             completion?()
         }
     }
-    
+
     // if stacks include viewController, remove all viewControllers from viewController position, and push viewController again, other, push in viewController
     func pushToViewControllerBefore(_ viewController: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
         var stackVCs = self.viewControllers

@@ -14,17 +14,17 @@ import XCTest
 import Nimble
 
 class DateEx_UTests: XCTestCase {
-    
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testExample() {
         // This is an example of a functional test case.
         let dateTest = Date()
@@ -34,13 +34,13 @@ class DateEx_UTests: XCTestCase {
         expect(dateTest.isFirstDayOfMonth).to(beFalse())
         expect(dateTest.isLastDayOfMonth).to(beFalse())
         expect(dateTest.isFirstMonthOfYear).to(beFalse())
-        
+
         let dateTestFirst = "1/1/2019".toDate(withFormat: "d/m/yyyy")
         let dateTestLast = "31/1/2019".toDate(withFormat: "d/m/yyyy")
         expect(dateTestFirst?.isFirstDayOfMonth).to(beTrue())
         expect(dateTestLast?.isLastDayOfMonth).to(beTrue())
         expect(dateTestFirst?.isFirstMonthOfYear).to(beTrue())
-        
+
         _ = dateTest.day
         _ = dateTest.month
         _ = dateTest.year

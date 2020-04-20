@@ -14,24 +14,24 @@ import XCTest
 import Nimble
 
 class NumberEx_UTests: XCTestCase {
-    
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     func testExample() {
         // This is an example of a functional test case.
         let numberInt: Int = 6666
-        
+
         expect(numberInt.toString()).to(equal("6666"), description: "No separator")
         expect(numberInt.toString(separator: ",")).to(equal("6,666"), description: "Separator: ','")
-        
+
         let numberInt64: Int64 = 6666
         expect(numberInt64.toString()).to(equal("6666"), description: "No separator")
         expect(numberInt64.toString(separator: ",")).to(equal("6,666"), description: "Separator: ','")

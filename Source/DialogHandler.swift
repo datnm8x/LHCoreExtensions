@@ -18,19 +18,19 @@ open class LHDialogHandler {
         if (String.isEmpty(title, trimCharacters: .whitespacesAndNewlines) && String.isEmpty(message, trimCharacters: .whitespacesAndNewlines)) || String.isEmpty(button, trimCharacters: .whitespacesAndNewlines) {
             return nil
         }
-        
+
         if let onPresentController = onVC ?? UIApplication.shared.keyWindow?.rootViewController?.topMostViewController {
             let alertViewController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            
+
             alertViewController.addAction(UIAlertAction(title: button, style: .default, handler: { (alertAction) in
                 buttonHandler?()
             }))
-            
+
             if let tinColor = tintColor { alertViewController.view.tintColor = tinColor }
             onPresentController.present(alertViewController, animated: true, completion: nil)
             return alertViewController
         }
-        
+
         return nil
     }
 
@@ -39,31 +39,31 @@ open class LHDialogHandler {
                           btnOK: String = "OK", btnCancel: String = "Cancel",
                           tintColor: UIColor? = nil,
                           onVC: UIViewController? = nil, buttonHandler:((String) -> Void)? = nil) -> UIAlertController? {
-        
+
         if (String.isEmpty(title, trimCharacters: .whitespacesAndNewlines) && String.isEmpty(message, trimCharacters: .whitespacesAndNewlines)) {
             return nil
         }
-        
+
         if (String.isEmpty(btnOK, trimCharacters: .whitespacesAndNewlines) && String.isEmpty(btnCancel, trimCharacters: .whitespacesAndNewlines)) {
             return nil
         }
-        
+
         if let onPresentController = onVC ?? UIApplication.shared.keyWindow?.rootViewController?.topMostViewController {
             let alertViewController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            
+
             alertViewController.addAction(UIAlertAction(title: btnOK, style: .default, handler: { (alertAction) in
                 buttonHandler?(btnOK)
             }))
-            
+
             alertViewController.addAction(UIAlertAction(title: btnCancel, style: .default, handler: { (alertAction) in
                 buttonHandler?(btnCancel)
             }))
-            
+
             if let tinColor = tintColor { alertViewController.view.tintColor = tinColor }
             onPresentController.present(alertViewController, animated: true, completion: nil)
             return alertViewController
         }
-        
+
         return nil
     }
 }
