@@ -9,6 +9,22 @@
 import Foundation
 import UIKit
 
+public extension UIButton {
+    @IBInspectable
+    var imageViewContentMode: UIView.ContentMode {
+        get { return imageView?.contentMode ?? UIView.ContentMode.scaleAspectFill }
+        set { imageView?.contentMode = newValue }
+    }
+}
+
+public extension UIControl {
+    /// `removeTarget` and `addTarget`
+    func setTarget(_ target: Any?, action: Selector, for controlEvents: UIControl.Event) {
+        removeTarget(target, action: action, for: controlEvents)
+        addTarget(target, action: action, for: controlEvents)
+    }
+}
+
 open class LHButton: UIButton {
     @objc private func didClickedAction() {
         self.onClicked?(self)
@@ -31,6 +47,12 @@ open class LHButton: UIButton {
 
     open override func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
+    }
+    
+    open func setImageViewContentMode(_ contentMode: UIView.ContentMode) {
+        imageViewContentMode = contentMode
+        contentHorizontalAlignment = .fill
+        contentVerticalAlignment = .fill
     }
 }
 

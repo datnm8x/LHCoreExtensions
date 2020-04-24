@@ -63,6 +63,9 @@
 		08C0FF3B227FEF6B0078F5AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08C0FF32227FEF6B0078F5AE /* Assets.xcassets */; };
 		08C0FF3C227FEF6B0078F5AE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08C0FF33227FEF6B0078F5AE /* LaunchScreen.storyboard */; };
 		08C0FF3D227FEF6B0078F5AE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08C0FF35227FEF6B0078F5AE /* Main.storyboard */; };
+		0956490B245282AA0006B94F /* Bundle+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0956490A245282AA0006B94F /* Bundle+Ex.swift */; };
+		0956490D2452BAD60006B94F /* LHAppdelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0956490C2452BAD60006B94F /* LHAppdelegate.swift */; };
+		095649112452E0470006B94F /* LHCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095649102452E0470006B94F /* LHCore.swift */; };
 		0999F3A7245181DB00C5E383 /* LHLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0999F3A6245181DB00C5E383 /* LHLabel.swift */; };
 		1AC0BFDE89909376AFED7A3E /* Pods_LHCoreExtensions_iOS_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BA860DA3C8C3EAE01D2D6DD /* Pods_LHCoreExtensions_iOS_Example.framework */; };
 		8035DB621BAB492500466CB3 /* LHCoreExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8111E3319A95C8B0040E7D1 /* LHCoreExtensions.framework */; };
@@ -133,6 +136,9 @@
 		08C0FF34227FEF6B0078F5AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		08C0FF36227FEF6B0078F5AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		08C0FF37227FEF6B0078F5AE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0956490A245282AA0006B94F /* Bundle+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Ex.swift"; sourceTree = "<group>"; };
+		0956490C2452BAD60006B94F /* LHAppdelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LHAppdelegate.swift; sourceTree = "<group>"; };
+		095649102452E0470006B94F /* LHCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LHCore.swift; sourceTree = "<group>"; };
 		0999F3A6245181DB00C5E383 /* LHLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LHLabel.swift; sourceTree = "<group>"; };
 		09B8AC9AFD345AF9B95B9BAB /* Pods-LHCoreExtensions iOS Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LHCoreExtensions iOS Tests.debug.xcconfig"; path = "Target Support Files/Pods-LHCoreExtensions iOS Tests/Pods-LHCoreExtensions iOS Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		2657CB400D8753B88D93E235 /* Pods-LHCoreExtensions iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LHCoreExtensions iOS.debug.xcconfig"; path = "Target Support Files/Pods-LHCoreExtensions iOS/Pods-LHCoreExtensions iOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -291,10 +297,13 @@
 			isa = PBXGroup;
 			children = (
 				083BD887227FE40E000C215D /* Collection+Ex.swift */,
+				095649102452E0470006B94F /* LHCore.swift */,
 				083BD88C227FE40E000C215D /* Date+Ex.swift */,
 				083BD88B227FE40E000C215D /* Number+Ex.swift */,
 				083BD891227FE40F000C215D /* String+Ex.swift */,
+				0956490A245282AA0006B94F /* Bundle+Ex.swift */,
 				083BD889227FE40E000C215D /* UIApplication+Responder+Ex.swift */,
+				0956490C2452BAD60006B94F /* LHAppdelegate.swift */,
 				083BD886227FE40E000C215D /* UIColor+Ex.swift */,
 				083BD888227FE40E000C215D /* UIDevice+Ex.swift */,
 				083BD88E227FE40E000C215D /* UIImage+Ex.swift */,
@@ -645,6 +654,7 @@
 				08A9C7EF2303E77800A0E25A /* LHEffectView.swift in Sources */,
 				083BD89E227FE40F000C215D /* UITextField+Ex.swift in Sources */,
 				083BD89C227FE40F000C215D /* UIViewController+Ex.swift in Sources */,
+				0956490D2452BAD60006B94F /* LHAppdelegate.swift in Sources */,
 				083BD89F227FE40F000C215D /* UtilsEx.swift in Sources */,
 				083BD89A227FE40F000C215D /* Number+Ex.swift in Sources */,
 				083BD898227FE40F000C215D /* UIApplication+Responder+Ex.swift in Sources */,
@@ -652,12 +662,14 @@
 				083BD89D227FE40F000C215D /* UIImage+Ex.swift in Sources */,
 				083BD896227FE40F000C215D /* Collection+Ex.swift in Sources */,
 				083BD89B227FE40F000C215D /* Date+Ex.swift in Sources */,
+				0956490B245282AA0006B94F /* Bundle+Ex.swift in Sources */,
 				083BD8A0227FE40F000C215D /* String+Ex.swift in Sources */,
 				085502D822827B5D0009A753 /* DialogHandler.swift in Sources */,
 				083BD897227FE40F000C215D /* UIDevice+Ex.swift in Sources */,
 				083BD8A3227FE40F000C215D /* UITableView+Ex.swift in Sources */,
 				0819BFD6228BC70A007639BB /* UINavigationController+Ex.swift in Sources */,
 				083BD895227FE40F000C215D /* UIColor+Ex.swift in Sources */,
+				095649112452E0470006B94F /* LHCore.swift in Sources */,
 				083BD8A2227FE40F000C215D /* UIView+Ex.swift in Sources */,
 				08A9C7F02303E77800A0E25A /* LHButton.swift in Sources */,
 				085502D722827B5D0009A753 /* KeyboardHandler.swift in Sources */,

@@ -50,6 +50,14 @@ public extension UIViewController {
 
         return _safeAreaInsets
     }
+    
+    var viewSafeAreaInsets: UIEdgeInsets {
+        if #available(iOS 11.0, *) {
+            return view.safeAreaInsets
+        } else {
+            return .zero
+        }
+    }
 
     var topMostViewController: UIViewController {
         if let viewController = self as? UINavigationController {
@@ -260,12 +268,21 @@ public extension UIViewController {
     }
 
     // return an instance UIViewController from storyboard with class name identifier
-    class func instanceStoryboard(_ storyboard: UIStoryboard) -> Self? {
-        return instanceFromStoryboard(storyboard)
+    class func instantiate(_ storyboard: UIStoryboard) -> Self {
+        return storyboard.viewController(identifier: classIdentifier)
+    }
+    
+    class func instantiateInitial(fromStoryboard storyboardName: String? = nil, bundle bundleOrNil: Bundle? = nil) -> Self {
+        let storyboardName = storyboardName ?? classIdentifier
+        return UIStoryboard.initialViewController(name: storyboardName, bundle: bundleOrNil)
+    }
+    
+    func initialViewController<T>() -> T {
+        storyboard!.initialViewController()
     }
 
-    private class func instanceFromStoryboard<T: UIViewController>(_ storyboard: UIStoryboard) -> T? {
-        return storyboard.instantiateViewController(withIdentifier: T.self.classIdentifier) as? T
+    func viewController<T: UIViewController>(identifier: String = T.classIdentifier) -> T {
+        storyboard!.viewController(identifier: identifier)
     }
 
     func show(_ vc: UIViewController?) {
@@ -365,4 +382,57 @@ open class LHBaseCollectionViewController: UICollectionViewController {
 
     open func viewWillAppearAtFirst(_ atFirst: Bool, animated: Bool) { }
     open func viewDidAppearAtFirst(_ atFirst: Bool, animated: Bool) { }
+}
+
+public extension UIStoryboard {
+    func initialViewController<T>() -> T {
+        instantiateInitialViewController() as! T
+    }
+
+    func viewController<T: UIViewController>(identifier: String = T.classIdentifier) -> T {
+        instantiateViewController(withIdentifier: identifier) as! T
+    }
+
+    class func initialViewController<T>(name storyboardName: String, bundle bundleOrNil: Bundle? = nil) -> T {
+        self.init(name: storyboardName, bundle: bundleOrNil).initialViewController()
+    }
+    
+    class func viewController<T: UIViewController>(name storyboardName: String, bundle bundleOrNil: Bundle? = nil, identifier: String = T.classIdentifier) -> T {
+        self.init(name: storyboardName, bundle: bundleOrNil).viewController(identifier: identifier)
+    }
+}
+
+@objc public extension UIViewController {
+    private func swizzled_present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        if #available(iOS 13.0, *) {
+            if viewControllerToPresent.modalPresentationStyle == .automatic || viewControllerToPresent.modalPresentationStyle == .pageSheet {
+                viewControllerToPresent.modalPresentationStyle = .fullScreen
+            }
+        }
+
+        swizzled_present(viewControllerToPresent, animated: animated, completion: completion)
+    }
+
+    @nonobjc private static let _swizzlePresentationStyle: Void = {
+        let instance: UIViewController = UIViewController()
+        let aClass: AnyClass! = object_getClass(instance)
+
+        let originalSelector = #selector(UIViewController.present(_:animated:completion:))
+        let swizzledSelector = #selector(UIViewController.swizzled_present(_:animated:completion:))
+
+        let originalMethod = class_getInstanceMethod(aClass, originalSelector)
+        let swizzledMethod = class_getInstanceMethod(aClass, swizzledSelector)
+
+        if let originalMethod = originalMethod, let swizzledMethod = swizzledMethod {
+            if !class_addMethod(aClass, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod)) {
+                method_exchangeImplementations(originalMethod, swizzledMethod)
+            } else {
+                class_replaceMethod(aClass, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod))
+            }
+        }
+    }()
+
+    @objc static func swizzlePresentationStyle() {
+        _ = _swizzlePresentationStyle
+    }
 }

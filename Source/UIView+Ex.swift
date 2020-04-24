@@ -152,6 +152,57 @@ extension UIView {
     {
         layer.applySketchShadow(color: color, opacity: opacity, x: x, y: y, blur: blur, spread: spread)
     }
+    
+    func add(to superview: UIView, belowSubview: UIView? = nil, aboveSubview: UIView? = nil) {
+        if let below = belowSubview {
+            superview.insertSubview(self, belowSubview: below)
+        } else if let above = aboveSubview {
+            superview.insertSubview(self, aboveSubview: above)
+        } else {
+            superview.addSubview(self)
+        }
+    }
+    
+    func sizeThatFits(width: CGFloat = CGFloat.greatestFiniteMagnitude,
+                      height: CGFloat = CGFloat.greatestFiniteMagnitude) -> CGSize {
+        sizeThatFits(CGSize(width: width, height: height))
+    }
+    
+    @discardableResult
+    func setLayout(
+        _ attr1: NSLayoutConstraint.Attribute, is relation: NSLayoutConstraint.Relation = .equal,
+        to: (view: Any, attribute: NSLayoutConstraint.Attribute)? = nil,
+        multiplier: CGFloat = 1, constant: CGFloat = 0, activate: Bool = true) -> NSLayoutConstraint {
+        let lc = NSLayoutConstraint(
+            item: self, attribute: attr1, relatedBy: relation,
+            toItem: to?.view, attribute: to?.attribute ?? .notAnAttribute,
+            multiplier: multiplier, constant: constant
+        )
+        lc.isActive = activate
+        return lc
+    }
+    
+    @discardableResult
+    func constraint(
+        equalToAnchorOf view: UIView,
+        safeArea: Bool = false,
+        top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0
+    ) -> (top: NSLayoutConstraint, left: NSLayoutConstraint, bottom: NSLayoutConstraint, right: NSLayoutConstraint) {
+        let topConst = topAnchor.constraint(equalTo: safeArea ? view.safeAreaTopAnchor : view.topAnchor, constant: top).activate()
+        let leftConst = leftAnchor.constraint(equalTo: safeArea ? view.safeAreaLeftAnchor : view.leftAnchor, constant: left).activate()
+        let bottomConst = bottomAnchor.constraint(equalTo: safeArea ? view.safeAreaBottomAnchor : view.bottomAnchor, constant: bottom).activate()
+        let rightConst = rightAnchor.constraint(equalTo: safeArea ? view.safeAreaRightAnchor : view.rightAnchor, constant: right).activate()
+        return (top: topConst, left: leftConst, bottom: bottomConst, right: rightConst)
+    }
+}
+
+public extension UIStackView {
+    func removeAllArrangedSubview(fromSuperview: Bool = true) {
+        arrangedSubviews.forEach {
+            removeArrangedSubview($0)
+            if fromSuperview { $0.removeFromSuperview() }
+        }
+    }
 }
 
 extension CALayer {
@@ -202,5 +253,93 @@ extension CACornerMask {
         if !self.contains(.layerMinXMinYCorner) { corner.remove(.topLeft) }
         if !self.contains(.layerMaxXMinYCorner) { corner.remove(.topRight) }
         return corner
+    }
+}
+
+public extension UIView {
+    var safeAreaLeadingAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.leadingAnchor
+        }
+        return leadingAnchor
+    }
+
+    var safeAreaTrailingAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.trailingAnchor
+        }
+        return trailingAnchor
+    }
+
+    var safeAreaLeftAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.leftAnchor
+        }
+        return leftAnchor
+    }
+
+    var safeAreaRightAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.rightAnchor
+        }
+        return rightAnchor
+    }
+
+    var safeAreaTopAnchor: NSLayoutYAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.topAnchor
+        }
+        return topAnchor
+    }
+
+    var safeAreaBottomAnchor: NSLayoutYAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.bottomAnchor
+        }
+        return bottomAnchor
+    }
+
+    var safeAreaWidthAnchor: NSLayoutDimension {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.widthAnchor
+        }
+        return widthAnchor
+    }
+
+    var safeAreaHeightAnchor: NSLayoutDimension {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.heightAnchor
+        }
+        return heightAnchor
+    }
+
+    var safeAreaCenterXAnchor: NSLayoutXAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.centerXAnchor
+        }
+        return centerXAnchor
+    }
+
+    var safeAreaCenterYAnchor: NSLayoutYAxisAnchor {
+        if #available(iOS 11.0, *) {
+            return safeAreaLayoutGuide.centerYAnchor
+        }
+        return centerYAnchor
+    }
+}
+
+public extension NSLayoutConstraint {
+    @discardableResult
+    func activate() -> NSLayoutConstraint {
+        isActive = true
+        return self
+    }
+}
+
+public extension UIViewAnimating {
+    @available(iOS 10.0, *)
+    func finish(at finalPosition: UIViewAnimatingPosition = .current) {
+        stopAnimation(false)
+        finishAnimation(at: finalPosition)
     }
 }

@@ -44,6 +44,10 @@ public func LocalizedString(_ key: String, tableName: String? = nil, bundle: Bun
     return NSLocalizedString(key, tableName: tableName, bundle: bundle, value: value, comment: comment)
 }
 
+public extension NSObject {
+    var description: String { return String(describing: self) }
+}
+
 public extension UserDefaults {
     static func setObj(_ value: Any?, forKey: String) {
         standard.set(value, forKey: forKey)

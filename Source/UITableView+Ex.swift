@@ -120,6 +120,53 @@ public extension UITableView {
             self?.reloadData()
         }
     }
+    
+    func register<T: UITableViewCell>(_ cell: T.Type) {
+        register(cell, forCellReuseIdentifier: cell.reuseIdentifier)
+    }
+
+    func dequeue<T: UITableViewCell>(as cell: T.Type, for indexPath: IndexPath? = nil) -> T? {
+        if let idx = indexPath {
+            return dequeueReusableCell(withIdentifier: cell.reuseIdentifier, for: idx) as? T
+        } else {
+            return dequeueReusableCell(withIdentifier: cell.reuseIdentifier) as? T
+        }
+    }
+    
+    func deselectSelectedRows(animated: Bool = true) {
+        indexPathsForSelectedRows?.forEach {
+            deselectRow(at: $0, animated: animated)
+        }
+    }
+    
+    func batchUpdates(_ updates: (() -> Swift.Void)?, completion: ((Bool) -> Swift.Void)? = nil) {
+        if #available(iOS 11, *) {
+            performBatchUpdates(updates, completion: completion)
+        } else {
+            guard let updateBlock = updates else {
+                completion?(false)
+                return
+            }
+            CATransaction.begin()
+            CATransaction.setCompletionBlock {
+                if let completionBlock = completion {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                        if Thread.isMainThread {
+                            completionBlock(true)
+                        } else {
+                            DispatchQueue.main.async(execute: {
+                                completionBlock(true)
+                            })
+                        }
+                    }
+                }
+            }
+            self.beginUpdates()
+            updateBlock()
+            self.endUpdates()
+            CATransaction.commit()
+        }
+    }
 }
 
 public extension UITableViewCell {
@@ -154,6 +201,25 @@ public extension UITableViewCell {
         self.preservesSuperviewLayoutMargins = false
         self.separatorInset = edgeInsets
         self.layoutMargins = UIEdgeInsets.zero
+    }
+    
+    class func registerNib(to tableView: UITableView) {
+        tableView.register(nib, forCellReuseIdentifier: reuseIdentifier)
+    }
+
+    class func registerClass(to tableView: UITableView) {
+        tableView.register(self, forCellReuseIdentifier: reuseIdentifier)
+    }
+
+    class func dequeue(from tableView: UITableView, for indexPath: IndexPath? = nil) -> Self {
+        func _dequeue<T>(from tableView: UITableView, for indexPath: IndexPath?) -> T {
+            if let idx = indexPath {
+                return tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier, for: idx) as! T
+            } else {
+                return tableView.dequeueReusableCell(withIdentifier: self.reuseIdentifier) as! T
+            }
+        }
+        return _dequeue(from: tableView, for: indexPath)
     }
 }
 
@@ -191,32 +257,7 @@ open class LHBaseTableView: UITableView {
     }
 
     override open func performBatchUpdates(_ updates: (() -> Swift.Void)?, completion: ((Bool) -> Swift.Void)? = nil) {
-        if #available(iOS 11, *) {
-            super.performBatchUpdates(updates, completion: completion)
-        } else {
-            guard let updateBlock = updates else {
-                completion?(false)
-                return
-            }
-            CATransaction.begin()
-            CATransaction.setCompletionBlock {
-                if let completionBlock = completion {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                        if Thread.isMainThread {
-                            completionBlock(true)
-                        } else {
-                            DispatchQueue.main.async(execute: {
-                                completionBlock(true)
-                            })
-                        }
-                    }
-                }
-            }
-            self.beginUpdates()
-            updateBlock()
-            self.endUpdates()
-            CATransaction.commit()
-        }
+        batchUpdates(updates, completion: completion)
     }
 
     public override init(frame: CGRect, style: UITableView.Style) {
@@ -268,6 +309,14 @@ public extension UICollectionView {
     func isLastIndexPath(_ indexPath: IndexPath) -> Bool {
         return (indexPath.section == self.numberOfSections - 1) && (indexPath.item == self.numberOfItems(inSection: indexPath.section) - 1)
     }
+    
+    func register<T: UICollectionViewCell>(_ cell: T.Type) {
+        register(cell, forCellWithReuseIdentifier: T.reuseIdentifier)
+    }
+
+    func dequeue<T: UICollectionViewCell>(as cell: T.Type, for indexPath: IndexPath) -> T? {
+        dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T
+    }
 }
 
 open class LHBaseCollectionView: UICollectionView {
@@ -314,6 +363,21 @@ public extension UICollectionViewCell {
 
         return parentView  as? UICollectionView
     }
+    
+    class func registerNib(to collectionView: UICollectionView) {
+        collectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
+    }
+
+    class func registerClass(to collectionView: UICollectionView) {
+        collectionView.register(self, forCellWithReuseIdentifier: reuseIdentifier)
+    }
+
+    class func dequeue(from collectionView: UICollectionView, for indexPath: IndexPath) -> Self {
+        func _dequeue<T>(from collectionView: UICollectionView, for indexPath: IndexPath) -> T {
+            collectionView.dequeueReusableCell(withReuseIdentifier: self.reuseIdentifier, for: indexPath) as! T
+        }
+        return _dequeue(from: collectionView, for: indexPath)
+    }
 }
 
 public extension UIScrollView {
@@ -351,4 +415,17 @@ public extension UICollectionReusableView {
 
 public extension UITableViewHeaderFooterView {
     static var reuseIdentifier: String { return String(describing: self) }
+}
+
+public extension UIScrollView {
+    func setContentOffset(_ offset: CGPoint, duration: TimeInterval) {
+        UIView.animate(withDuration: duration, animations: { [weak self] in
+            self?.contentOffset = offset
+        }, completion: { [unowned self] _ in
+            if self.contentOffset != offset {
+                self.contentOffset = offset
+            }
+            self.delegate?.scrollViewDidEndScrollingAnimation?(self)
+        })
+    }
 }

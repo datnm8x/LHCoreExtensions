@@ -74,5 +74,26 @@ public extension UINavigationController {
             completion?()
         }
     }
+    
+    func replaceLast(with viewController: UIViewController, animated: Bool = true) {
+        var vcs = viewControllers
+        vcs.removeLastSafe()
+        vcs.append(viewController)
+        
+        setViewControllers(vcs, animated: animated)
+    }
+
+    func layoutNavigationBar() {
+        let value = isNavigationBarHidden
+        isNavigationBarHidden = !value
+        isNavigationBarHidden = value
+    }
 }
 
+public extension UIViewController {
+    func canPopViewController() -> Bool {
+        guard let nav = (self as? UINavigationController) ?? navigationController else { return false }
+        for (i, vc) in nav.viewControllers.enumerated() where vc === self { return i > 0 }
+        return false
+    }
+}

@@ -55,3 +55,83 @@ public extension Array where Element: StringProtocol {
         })
     }
 }
+
+public extension Array {
+    var customDescription: String {
+        guard !isEmpty else { return "[]" }
+        var result = "\(type(of: self))[\(count)]=["
+        for (i, e) in enumerated() {
+            result += "\n\t·\(i)=\(e)"
+        }
+        result += "\n]"
+        return result
+    }
+}
+
+public extension Dictionary {
+    var customDescription: String {
+        guard !isEmpty else { return "[]" }
+        var result = "\(type(of: self))[\(count)]=["
+        for k in keys {
+            if let v = self[k] {
+                result += "\n\t·\(k)=\(v)"
+            } else {
+                result += "\n\t·\(k)=nil"
+            }
+        }
+        result += "\n]"
+        return result
+    }
+}
+
+public extension Dictionary where Key: Comparable {
+    var customDescription: String {
+        guard !isEmpty else { return "[]" }
+        var result = "\(type(of: self))[\(count)]=["
+        for k in keys.sorted() {
+            if let v = self[k] {
+                result += "\n\t·\(k)=\(v)"
+            } else {
+                result += "\n\t·\(k)=nil"
+            }
+        }
+        result += "\n]"
+        return result
+    }
+}
+
+public extension IndexPath {
+    static func rows(_ rows: [Int], section: Int = 0) -> [Self] {
+        rows.map { .init(row: $0, section: section) }
+    }
+
+    static func rows(_ args: Int..., section: Int = 0) -> [Self] {
+        rows(args, section: section)
+    }
+    
+    static func items(_ items: [Int], section: Int = 0) -> [Self] {
+        items.map { .init(item: $0, section: section) }
+    }
+
+    static func items(_ args: Int..., section: Int = 0) -> [Self] {
+        items(args, section: section)
+    }
+}
+
+public extension Optional {
+    var wrappedDescription: String {
+        guard let wrapped = self else { return "nil" }
+        return "\(wrapped)"
+    }
+}
+
+public extension Optional where Wrapped: Collection {
+    var isEmpty: Bool {
+        guard let wrapped = self else { return true }
+        return wrapped.isEmpty
+    }
+    
+    var countValue: Int {
+        return self?.count ?? 0
+    }
+}

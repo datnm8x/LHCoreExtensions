@@ -9,6 +9,20 @@
 import Foundation
 import UIKit
 
+public extension UIAlertController {
+    convenience init(title: String? = nil, message: String? = nil, style: UIAlertController.Style = .alert) {
+        self.init(title: title, message: message, preferredStyle: style)
+    }
+
+    @discardableResult
+    func addAction(title: String, style: UIAlertAction.Style = .default, handler: ((UIAlertAction) -> Swift.Void)? = nil) -> UIAlertAction {
+        let action = UIAlertAction(title: title, style: style, handler: handler)
+        addAction(action)
+        return action
+    }
+}
+
+
 open class LHDialogHandler {
     @discardableResult
     open class func showAlert(title: String? = nil, message: String?,

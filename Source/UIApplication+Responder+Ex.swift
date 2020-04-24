@@ -55,32 +55,37 @@ public extension UIApplication {
         return (self.delegateKeyWindow ?? UIApplication.shared.keyWindow) ?? UIApplication.shared.windows.first
     }
 
-    static func switchRootViewController(to rootViewController: UIViewController, animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
+    static func switchRootViewController(to newRootViewController: UIViewController, animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
         guard let window = appKeyWindow else {
             completion?(false)
             return
         }
-
-        if animated {
-            UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                let oldState: Bool = UIView.areAnimationsEnabled
-                UIView.setAnimationsEnabled(false)
-                window.rootViewController = rootViewController
-                UIView.setAnimationsEnabled(oldState)
-            }, completion: { (finished: Bool) -> () in
-                window.makeKeyAndVisible()
-                completion?(true)
-            })
-        } else {
-            window.rootViewController = rootViewController
+        
+        guard animated else {
+            window.rootViewController = newRootViewController
             window.makeKeyAndVisible()
             completion?(true)
+            return
         }
+
+        window.rootViewController = newRootViewController
+        window.makeKeyAndVisible()
+        UIView.transition(with: window,
+                          duration: 0.4,
+                          options: .transitionCrossDissolve,
+                          animations: nil,
+                          completion: { _ in
+                              completion?(true)
+                          })
     }
 }
 
 extension UIApplication {
     static var delegateKeyWindow: UIWindow? { return self.shared.delegate?.window ?? nil }
+    static func canOpen(url string: String) -> Bool {
+        guard let url = URL(string: string) else { return false }
+        return shared.canOpenURL(url)
+    }
 }
 
 public extension UIResponder {
@@ -96,9 +101,10 @@ public extension UIResponder {
         UIResponder.currentFirstResponder__ = self
     }
 
-    static func sharedAppDelegate<T: UIResponder>() -> T? {
+    private static func sharedAppDelegate<T: UIResponder>() -> T? {
         return UIApplication.shared.delegate as? T
     }
+    static var shared: Self { return self.sharedAppDelegate()! }
 }
 
 public extension DispatchTime {
@@ -128,14 +134,6 @@ public extension DispatchQueue {
         }
     }
 
-    class func mainSyncAfter(seconds: Double, execute work: @escaping @convention(block) () -> Swift.Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
-            DispatchQueue.main.sync {
-                work()
-            }
-        }
-    }
-
     class func backgroundAsync(execute work: @escaping @convention(block) () -> Swift.Void) {
         DispatchQueue.background.async {
             work()
@@ -144,12 +142,6 @@ public extension DispatchQueue {
 
     class func backgroundAsyncAfter(seconds: Double, execute work: @escaping @convention(block) () -> Swift.Void) {
         DispatchQueue.background.asyncAfter(deadline: .now() + seconds) {
-            work()
-        }
-    }
-
-    class func backgroundSync(execute work: @escaping @convention(block) () -> Swift.Void) {
-        DispatchQueue.background.sync {
             work()
         }
     }
@@ -168,6 +160,15 @@ public extension DispatchQueue {
 }
 
 public extension Data {
+    func hexadecimal(uppercase: Bool = true) -> String {
+        var result = ""
+        let format = uppercase ? "%02X" : "%02x"
+        withUnsafeBytes { (pointer: UnsafeRawBufferPointer) in
+            pointer.forEach { result += String(format: format, $0) }
+        }
+        return result
+    }
+    
     func deviceTokenString() -> String {
         let tokenParts = self.map { data -> String in
             return String(format: "%02.2hhx", data)
@@ -175,4 +176,83 @@ public extension Data {
 
         return tokenParts.joined()
     }
+    
+    var stringUTF8: String? { return String(data: self, encoding: .utf8) }
+}
+
+@available(iOS 10.0, *)
+public extension UNUserNotificationCenter {
+    class func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Swift.Void) {
+        current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completionHandler(settings)
+            }
+        }
+    }
+    
+    class func requestAuthorization(options: UNAuthorizationOptions = [], completionHandler: @escaping (Bool, Error?) -> Void) {
+        current().requestAuthorization(options: options, completionHandler: completionHandler)
+    }
+}
+
+public struct LHNotificationOptions : OptionSet {
+    public var rawValue: UInt
+
+    public init(rawValue: UInt) {
+        self.rawValue = rawValue
+    }
+
+    public static var badge: LHNotificationOptions {
+        if #available(iOS 10.0, *) {
+            return LHNotificationOptions(rawValue: UNAuthorizationOptions.badge.rawValue)
+        } else {
+            return LHNotificationOptions(rawValue: UIUserNotificationType.badge.rawValue)
+        }
+    }
+
+    public static var sound: LHNotificationOptions {
+        if #available(iOS 10.0, *) {
+            return LHNotificationOptions(rawValue: UNAuthorizationOptions.sound.rawValue)
+        } else {
+            return LHNotificationOptions(rawValue: UIUserNotificationType.sound.rawValue)
+        }
+    }
+
+    public static var alert: LHNotificationOptions {
+        if #available(iOS 10.0, *) {
+            return LHNotificationOptions(rawValue: UNAuthorizationOptions.alert.rawValue)
+        } else {
+            return LHNotificationOptions(rawValue: UIUserNotificationType.alert.rawValue)
+        }
+    }
+    
+    @available(iOS 10.0, *)
+    public static var carPlay: LHNotificationOptions {
+        return LHNotificationOptions(rawValue: UNAuthorizationOptions.carPlay.rawValue)
+    }
+    
+    @available(iOS 12.0, *)
+    public static var criticalAlert: LHNotificationOptions {
+        return LHNotificationOptions(rawValue: UNAuthorizationOptions.criticalAlert.rawValue)
+    }
+    
+    @available(iOS 12.0, *)
+    public static var providesAppNotificationSettings: LHNotificationOptions {
+        return LHNotificationOptions(rawValue: UNAuthorizationOptions.providesAppNotificationSettings.rawValue)
+    }
+    
+    @available(iOS 12.0, *)
+    public static var provisional: LHNotificationOptions {
+        return LHNotificationOptions(rawValue: UNAuthorizationOptions.provisional.rawValue)
+    }
+    
+    @available(iOS 13.0, *)
+    public static var announcement: LHNotificationOptions {
+        return LHNotificationOptions(rawValue: UNAuthorizationOptions.announcement.rawValue)
+    }
+    
+    var userNotificationType: UIUserNotificationType { return UIUserNotificationType(rawValue: rawValue) }
+    
+    @available(iOS 10.0, *)
+    var authorizationOptions: UNAuthorizationOptions { return UNAuthorizationOptions(rawValue: rawValue) }
 }

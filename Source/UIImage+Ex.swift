@@ -44,4 +44,14 @@ public extension UIImage {
         guard let path = (inBundle ?? Bundle.main).path(forResource: named, ofType: ofType) else { return nil }
         self.init(contentsOfFile: path)
     }
+    
+    func resizeCentered() -> UIImage {
+        let vCap = size.height / 2
+        let hCap = size.width / 2
+        return resizableImage(withCapInsets: .init(top: vCap, left: hCap, bottom: vCap, right: hCap))
+    }
+
+    var scaledSize: CGSize {
+        .init(width: size.width * scale, height: size.height * scale)
+    }
 }

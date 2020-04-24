@@ -398,3 +398,21 @@ extension String {
         return filter{ $0.isEmoji }.flatMap { $0.unicodeScalars }
     }
 }
+
+public extension URLComponents {
+    func queries(lowercaseName: Bool = true) -> [String: String] {
+        guard let qis = queryItems else { return [:] }
+        var result: [String: String] = [:]
+        for qi in qis {
+            result[lowercaseName ? qi.name.lowercased() : qi.name] = qi.value ?? ""
+        }
+        return result
+    }
+}
+
+public extension URL {
+    func queries(componentsResolvingAgainstBaseURL resolve: Bool = false, lowercaseName: Bool = true) -> [String: String] {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: resolve) else { return [:] }
+        return components.queries(lowercaseName: lowercaseName)
+    }
+}
